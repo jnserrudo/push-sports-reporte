@@ -73,12 +73,6 @@ export default function App() {
     const date = new Date();
     setCurrentDate(date.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' }));
     
-    // Inyectar librería html2pdf dinámicamente
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-    script.async = true;
-    document.body.appendChild(script);
-
     // Inyectar fuente Oswald
     const style = document.createElement('style');
     style.innerHTML = `
