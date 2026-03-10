@@ -7,8 +7,11 @@ import {
   TrendingUp, 
   Box, 
   Activity,
-  Loader2
+  Loader2,
+  Download
 } from 'lucide-react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import ReportPDF from './ReportPDF';
 
 // --- DATOS INICIALES (ESTÁTICOS) ---
 const INITIAL_PRODUCTS = [
@@ -63,6 +66,7 @@ export default function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isReportMode, setIsReportMode] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState(null);
 
   useEffect(() => {
     // Configurar fecha
@@ -144,79 +148,37 @@ export default function App() {
     window.scrollTo(0, 0);
   };
 
-  const handlePrint = () => {
-    if (!window.html2pdf) {
-      alert("El motor de PDF se está cargando, por favor intenta en un momento.");
-      return;
-    }
-
-    setIsDownloading(true);
-    const element = document.getElementById('report-content');
-    
-    // Configuración optimizada para descarga directa
-    const fecha = new Date().toLocaleDateString('es-AR').replace(/\//g, '-');
-    const opt = {
-      margin:       [10, 5, 10, 5],
-      filename:     `PushSport_Reporte_${fecha}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { 
-        scale: 2, // 2x es suficiente para excelente calidad y más estable que 3x
-        useCORS: true,
-        allowTaint: true,
-        letterRendering: true,
-        logging: false,
-        windowWidth: 1200
-      },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    // Ejecutar descarga con un pequeño delay para asegurar renderizado final
-    setTimeout(() => {
-      window.html2pdf()
-        .set(opt)
-        .from(element)
-        .save()
-        .then(() => {
-          setIsDownloading(false);
-        })
-        .catch(err => {
-          console.error("Error descargando PDF:", err);
-          setIsDownloading(false);
-          alert("Hubo un error al generar el PDF. Por favor intenta de nuevo.");
-        });
-    }, 500);
-  };
-
   const totalProducts = products.length;
   const avgPushPrice = products.reduce((acc, curr) => acc + curr.precioPush, 0) / totalProducts;
 
   if (isReportMode) {
     return (
-      <div className="min-h-screen bg-gray-50 text-gray-900 p-10 font-sans">
+      <div className="min-h-screen bg-[#F9FAFB] text-[#111827] p-4 md:p-10 font-sans">
         {/* Toolbar no imprimible */}
         <div className="no-print fixed top-6 right-6 flex gap-4 z-50">
           <button 
             onClick={() => setIsReportMode(false)}
-            className="bg-black/80 hover:bg-black text-white px-6 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 transition-all backdrop-blur-md"
+            className="bg-black/80 hover:bg-black text-white px-6 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 transition-all backdrop-blur-md border border-white/10"
           >
-            <X className="w-4 h-4" /> Volver al Panel
+            <X className="w-4 h-4" /> Volver al Tablero
           </button>
-          <button 
-            onClick={handlePrint}
-            disabled={isDownloading}
-            className={`bg-[#00A3CC] hover:bg-[#00E5FF] text-white px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 shadow-lg transition-all ${isDownloading ? 'opacity-70 cursor-not-allowed' : ''}`}
+          
+          <PDFDownloadLink 
+            document={<ReportPDF products={products} currentDate={currentDate} totalProducts={totalProducts} />} 
+            fileName={`PushSport_Reporte_${currentDate.replace(/\//g, '-')}.pdf`}
+            className="bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 shadow-lg transition-all font-bold"
           >
-            {isDownloading ? (
-               <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Printer className="w-4 h-4" />
+            {({ blob, url, loading, error }) => (
+              <>
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                {loading ? 'Preparando archivo...' : 'Descargar PDF'}
+              </>
             )}
-            {isDownloading ? 'Generando PDF...' : 'Descargar PDF'}
-          </button>
+          </PDFDownloadLink>
         </div>
 
         {/* CONTENIDO DEL REPORTE PREMIUM */}
-        <div id="report-content" className="max-w-4xl mx-auto bg-white shadow-2xl p-6 md:p-16 print:shadow-none print:p-0 rounded-3xl md:rounded-[40px] print:rounded-none relative overflow-hidden">
+        <div id="report-content" className="max-w-4xl mx-auto bg-[#FFFFFF] shadow-2xl p-6 md:p-16 print:shadow-none print:p-0 rounded-3xl md:rounded-[40px] print:rounded-none relative overflow-hidden">
           
           {/* Header del Reporte */}
           <div className="flex flex-col md:flex-row justify-between items-start mb-8 md:mb-16 border-b-2 md:border-b-4 border-black pb-6 md:pb-10 gap-6">
@@ -249,25 +211,25 @@ export default function App() {
           <div className="overflow-x-auto -mx-6 md:mx-0">
             <table className="w-full border-collapse mb-10 min-w-[600px] md:min-w-full px-6 md:px-0">
               <thead>
-                <tr className="border-b-2 border-black">
-                  <th className="py-4 text-left font-oswald uppercase text-[10px] md:text-xs tracking-widest text-gray-600">Marca</th>
-                  <th className="py-4 text-left font-oswald uppercase text-[10px] md:text-xs tracking-widest text-gray-600">Producto / Sabor</th>
-                  <th className="py-4 text-right font-oswald uppercase text-[10px] md:text-xs tracking-widest text-gray-600">Precio PushSport</th>
-                  <th className="py-4 text-right font-oswald uppercase text-[10px] md:text-xs tracking-widest text-gray-600">Sugerido</th>
+                <tr className="border-b-2 border-[#000000]">
+                  <th className="py-4 text-left font-oswald uppercase text-[10px] md:text-xs tracking-widest text-[#4B5563]">Marca</th>
+                  <th className="py-4 text-left font-oswald uppercase text-[10px] md:text-xs tracking-widest text-[#4B5563]">Producto / Sabor</th>
+                  <th className="py-4 text-right font-oswald uppercase text-[10px] md:text-xs tracking-widest text-[#4B5563]">Precio PushSport</th>
+                  <th className="py-4 text-right font-oswald uppercase text-[10px] md:text-xs tracking-widest text-[#4B5563]">Sugerido</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-[#F3F4F6]">
                 {products.map((product) => (
-                  <tr key={`print-${product.id}`} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="py-4 md:py-5 text-xs md:text-sm font-semibold text-gray-400 uppercase tracking-tight">{product.marca}</td>
+                  <tr key={`print-${product.id}`} className="hover:bg-[#F9FAFB] transition-colors">
+                    <td className="py-4 md:py-5 text-xs md:text-sm font-semibold text-[#9CA3AF] uppercase tracking-tight">{product.marca}</td>
                     <td className="py-4 md:py-5">
-                      <div className="font-bold text-base md:text-lg text-black leading-tight">{product.producto}</div>
-                      {product.sabor !== '-' && <div className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-widest">{product.sabor}</div>}
+                      <div className="font-bold text-base md:text-lg text-[#000000] leading-tight">{product.producto}</div>
+                      {product.sabor !== '-' && <div className="text-[10px] text-[#9CA3AF] mt-0.5 uppercase tracking-widest">{product.sabor}</div>}
                     </td>
                     <td className="py-4 md:py-5 text-right font-oswald font-bold text-lg md:text-xl text-[#007A99] tracking-tighter">
                       {formatPrice(product.precioPush)}
                     </td>
-                    <td className="py-4 md:py-5 text-right font-oswald font-bold text-lg md:text-xl text-black tracking-tighter">
+                    <td className="py-4 md:py-5 text-right font-oswald font-bold text-lg md:text-xl text-[#000000] tracking-tighter">
                       {product.precioPublico > 0 ? formatPrice(product.precioPublico) : '-'}
                     </td>
                   </tr>
