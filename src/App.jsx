@@ -62,6 +62,7 @@ export default function App() {
   const [currentDate, setCurrentDate] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [isReportMode, setIsReportMode] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     // Configurar fecha
@@ -144,7 +145,43 @@ export default function App() {
   };
 
   const handlePrint = () => {
-    window.print();
+    if (!window.html2pdf) {
+      alert("El motor de PDF se está cargando, por favor intenta en un momento.");
+      return;
+    }
+
+    setIsDownloading(true);
+    const element = document.getElementById('report-content');
+    
+    // Configuración optimizada para descarga directa
+    const fecha = new Date().toLocaleDateString('es-AR').replace(/\//g, '-');
+    const opt = {
+      margin:       [10, 5, 10, 5],
+      filename:     `PushSport_Reporte_${fecha}.pdf`,
+      image:        { type: 'jpeg', quality: 1.0 },
+      html2canvas:  { 
+        scale: 3, // Mayor escala para nitidez extrema
+        useCORS: true,
+        letterRendering: true,
+        logging: false,
+        windowWidth: 1200
+      },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // Ejecutar descarga
+    window.html2pdf()
+      .set(opt)
+      .from(element)
+      .save()
+      .then(() => {
+        setIsDownloading(false);
+      })
+      .catch(err => {
+        console.error("Error descargando PDF:", err);
+        setIsDownloading(false);
+        alert("Hubo un error al generar el PDF. Por favor intenta de nuevo.");
+      });
   };
 
   const totalProducts = products.length;
@@ -163,14 +200,20 @@ export default function App() {
           </button>
           <button 
             onClick={handlePrint}
-            className="bg-[#00A3CC] hover:bg-[#00E5FF] text-white px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 shadow-lg transition-all"
+            disabled={isDownloading}
+            className={`bg-[#00A3CC] hover:bg-[#00E5FF] text-white px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 shadow-lg transition-all ${isDownloading ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
-            <Printer className="w-4 h-4" /> Imprimir / Guardar PDF
+            {isDownloading ? (
+               <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Printer className="w-4 h-4" />
+            )}
+            {isDownloading ? 'Generando PDF...' : 'Descargar PDF'}
           </button>
         </div>
 
         {/* CONTENIDO DEL REPORTE PREMIUM */}
-        <div className="max-w-4xl mx-auto bg-white shadow-2xl p-6 md:p-16 print:shadow-none print:p-0 rounded-3xl md:rounded-[40px] print:rounded-none relative overflow-hidden">
+        <div id="report-content" className="max-w-4xl mx-auto bg-white shadow-2xl p-6 md:p-16 print:shadow-none print:p-0 rounded-3xl md:rounded-[40px] print:rounded-none relative overflow-hidden">
           
           {/* Header del Reporte */}
           <div className="flex flex-col md:flex-row justify-between items-start mb-8 md:mb-16 border-b-2 md:border-b-4 border-black pb-6 md:pb-10 gap-6">
