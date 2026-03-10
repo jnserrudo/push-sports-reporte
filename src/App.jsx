@@ -149,10 +149,10 @@ export default function App() {
     return (
       <div className="min-h-screen bg-[#F9FAFB] text-[#111827] p-4 md:p-10 font-sans">
         {/* Toolbar no imprimible */}
-        <div className="no-print fixed top-6 right-6 flex gap-4 z-50">
+        <div className="no-print fixed top-6 right-6 flex gap-4 z-[100] pointer-events-auto">
           <button 
             onClick={() => setIsReportMode(false)}
-            className="bg-black/80 hover:bg-black text-white px-6 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 transition-all backdrop-blur-md border border-white/10"
+            className="bg-black/80 hover:bg-black text-white px-6 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 transition-all backdrop-blur-md border border-white/10 cursor-pointer shadow-xl active:scale-95"
           >
             <X className="w-4 h-4" /> Volver al Tablero
           </button>
@@ -160,7 +160,7 @@ export default function App() {
           <PDFDownloadLink 
             document={<ReportPDF products={products} currentDate={currentDate} totalProducts={totalProducts} />} 
             fileName={`PushSport_Reporte_${currentDate.replace(/\//g, '-')}.pdf`}
-            className="bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 shadow-lg transition-all font-bold"
+            className="bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 shadow-2xl transition-all font-bold cursor-pointer hover:scale-105 active:scale-95"
           >
             {({ blob, url, loading, error }) => (
               <>
@@ -273,7 +273,7 @@ export default function App() {
           
           <button 
             onClick={handleGeneratePDF}
-            className="group flex items-center justify-center gap-2 bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] font-oswald font-bold px-6 py-4 md:py-3 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(0,163,204,0.4)] hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] uppercase tracking-tight w-full md:w-auto"
+            className="group flex items-center justify-center gap-2 bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] font-oswald font-bold px-6 py-4 md:py-3 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(0,163,204,0.4)] hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] uppercase tracking-tight w-full md:w-auto cursor-pointer active:scale-95 relative z-[100]"
           >
             <Printer className="w-5 h-5 group-hover:scale-110 transition-transform" strokeWidth={2.5} />
             VER VISTA PREVIA
