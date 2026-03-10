@@ -158,10 +158,11 @@ export default function App() {
     const opt = {
       margin:       [10, 5, 10, 5],
       filename:     `PushSport_Reporte_${fecha}.pdf`,
-      image:        { type: 'jpeg', quality: 1.0 },
+      image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { 
-        scale: 3, // Mayor escala para nitidez extrema
+        scale: 2, // 2x es suficiente para excelente calidad y más estable que 3x
         useCORS: true,
+        allowTaint: true,
         letterRendering: true,
         logging: false,
         windowWidth: 1200
@@ -169,19 +170,21 @@ export default function App() {
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // Ejecutar descarga
-    window.html2pdf()
-      .set(opt)
-      .from(element)
-      .save()
-      .then(() => {
-        setIsDownloading(false);
-      })
-      .catch(err => {
-        console.error("Error descargando PDF:", err);
-        setIsDownloading(false);
-        alert("Hubo un error al generar el PDF. Por favor intenta de nuevo.");
-      });
+    // Ejecutar descarga con un pequeño delay para asegurar renderizado final
+    setTimeout(() => {
+      window.html2pdf()
+        .set(opt)
+        .from(element)
+        .save()
+        .then(() => {
+          setIsDownloading(false);
+        })
+        .catch(err => {
+          console.error("Error descargando PDF:", err);
+          setIsDownloading(false);
+          alert("Hubo un error al generar el PDF. Por favor intenta de nuevo.");
+        });
+    }, 500);
   };
 
   const totalProducts = products.length;
@@ -279,8 +282,8 @@ export default function App() {
             <p className="font-oswald text-xs font-bold tracking-widest text-gray-500">WWW.PUSHSPORT.COM.AR</p>
           </div>
 
-          {/* Decoración PDF */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gray-50 rounded-full blur-3xl opacity-50 -mr-32 -mt-32"></div>
+          {/* Decoración PDF (Simplificada para evitar errores de captura) */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gray-50 rounded-full opacity-50 -mr-32 -mt-32"></div>
           <div className="absolute bottom-10 left-10 w-4 h-4 rounded-full bg-[#00A3CC]"></div>
         </div>
       </div>
