@@ -170,25 +170,25 @@ export default function App() {
         </div>
 
         {/* CONTENIDO DEL REPORTE PREMIUM */}
-        <div className="max-w-4xl mx-auto bg-white shadow-2xl p-16 print:shadow-none print:p-0 rounded-[40px] print:rounded-none relative overflow-hidden">
+        <div className="max-w-4xl mx-auto bg-white shadow-2xl p-6 md:p-16 print:shadow-none print:p-0 rounded-3xl md:rounded-[40px] print:rounded-none relative overflow-hidden">
           
           {/* Header del Reporte */}
-          <div className="flex justify-between items-start mb-16 border-b-4 border-black pb-10">
+          <div className="flex flex-col md:flex-row justify-between items-start mb-8 md:mb-16 border-b-2 md:border-b-4 border-black pb-6 md:pb-10 gap-6">
             <div>
-              <h1 className="font-oswald text-6xl font-bold tracking-tighter uppercase leading-none">
+              <h1 className="font-oswald text-4xl md:text-6xl font-bold tracking-tighter uppercase leading-none">
                 PUSH<span className="text-[#00A3CC]">SPORT</span>
               </h1>
-              <p className="font-oswald text-sm tracking-[0.3em] text-[#00A3CC] uppercase mt-2 font-semibold">
+              <p className="font-oswald text-[10px] md:text-sm tracking-[0.2em] md:tracking-[0.3em] text-[#00A3CC] uppercase mt-2 font-semibold">
                 Intelligence & Performance Report
               </p>
             </div>
-            <div className="text-right">
-              <p className="font-oswald text-xs uppercase tracking-widest text-gray-400 mb-1">Fecha Emisión</p>
-              <p className="font-oswald text-xl font-bold">{currentDate}</p>
+            <div className="text-left md:text-right">
+              <p className="font-oswald text-[10px] uppercase tracking-widest text-gray-400 mb-1">Fecha Emisión</p>
+              <p className="font-oswald text-lg md:text-xl font-bold">{currentDate}</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mb-8 md:mb-12">
             <div className="bg-gray-50 border-l-4 border-[#00A3CC] p-6 rounded-2xl">
               <p className="font-oswald text-[10px] uppercase tracking-widest text-gray-500 mb-2 font-bold">Total Referencias</p>
               <p className="font-oswald text-4xl font-bold text-black">{totalProducts}</p>
@@ -200,33 +200,35 @@ export default function App() {
           </div>
 
           {/* Tabla de Productos */}
-          <table className="w-full border-collapse mb-10">
-            <thead>
-              <tr className="border-b-2 border-black">
-                <th className="py-4 text-left font-oswald uppercase text-xs tracking-widest text-gray-600">Marca</th>
-                <th className="py-4 text-left font-oswald uppercase text-xs tracking-widest text-gray-600">Producto / Sabor</th>
-                <th className="py-4 text-right font-oswald uppercase text-xs tracking-widest text-gray-600">Precio PushSport</th>
-                <th className="py-4 text-right font-oswald uppercase text-xs tracking-widest text-gray-600">Sugerido</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {products.map((product) => (
-                <tr key={`print-${product.id}`} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="py-5 text-sm font-semibold text-gray-400 uppercase tracking-tight">{product.marca}</td>
-                  <td className="py-5">
-                    <div className="font-bold text-lg text-black leading-tight">{product.producto}</div>
-                    {product.sabor !== '-' && <div className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-widest">{product.sabor}</div>}
-                  </td>
-                  <td className="py-5 text-right font-oswald font-bold text-xl text-[#007A99] tracking-tighter">
-                    {formatPrice(product.precioPush)}
-                  </td>
-                  <td className="py-5 text-right font-oswald font-bold text-xl text-black tracking-tighter">
-                    {product.precioPublico > 0 ? formatPrice(product.precioPublico) : '-'}
-                  </td>
+          <div className="overflow-x-auto -mx-6 md:mx-0">
+            <table className="w-full border-collapse mb-10 min-w-[600px] md:min-w-full px-6 md:px-0">
+              <thead>
+                <tr className="border-b-2 border-black">
+                  <th className="py-4 text-left font-oswald uppercase text-[10px] md:text-xs tracking-widest text-gray-600">Marca</th>
+                  <th className="py-4 text-left font-oswald uppercase text-[10px] md:text-xs tracking-widest text-gray-600">Producto / Sabor</th>
+                  <th className="py-4 text-right font-oswald uppercase text-[10px] md:text-xs tracking-widest text-gray-600">Precio PushSport</th>
+                  <th className="py-4 text-right font-oswald uppercase text-[10px] md:text-xs tracking-widest text-gray-600">Sugerido</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {products.map((product) => (
+                  <tr key={`print-${product.id}`} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="py-4 md:py-5 text-xs md:text-sm font-semibold text-gray-400 uppercase tracking-tight">{product.marca}</td>
+                    <td className="py-4 md:py-5">
+                      <div className="font-bold text-base md:text-lg text-black leading-tight">{product.producto}</div>
+                      {product.sabor !== '-' && <div className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-widest">{product.sabor}</div>}
+                    </td>
+                    <td className="py-4 md:py-5 text-right font-oswald font-bold text-lg md:text-xl text-[#007A99] tracking-tighter">
+                      {formatPrice(product.precioPush)}
+                    </td>
+                    <td className="py-4 md:py-5 text-right font-oswald font-bold text-lg md:text-xl text-black tracking-tighter">
+                      {product.precioPublico > 0 ? formatPrice(product.precioPublico) : '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {/* Footer del Reporte */}
           <div className="mt-20 pt-10 border-t border-gray-100 text-center">
@@ -269,10 +271,10 @@ export default function App() {
           
           <button 
             onClick={handleGeneratePDF}
-            className={`group flex items-center gap-2 bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] font-oswald font-bold px-6 py-3 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(0,163,204,0.4)] hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] uppercase tracking-tight`}
+            className="group flex items-center justify-center gap-2 bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] font-oswald font-bold px-6 py-4 md:py-3 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(0,163,204,0.4)] hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] uppercase tracking-tight w-full md:w-auto"
           >
             <Printer className="w-5 h-5 group-hover:scale-110 transition-transform" strokeWidth={2.5} />
-            VER VISTA PREVIA DEL REPORTE
+            VER VISTA PREVIA
           </button>
         </header>
 
@@ -398,8 +400,12 @@ export default function App() {
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-oswald text-lg">$</span>
                     <input
                       type="number"
-                      value={editingProduct.precioPush}
-                      onChange={(e) => setEditingProduct({...editingProduct, precioPush: Number(e.target.value)})}
+                      value={editingProduct.precioPush === 0 ? '' : editingProduct.precioPush}
+                      placeholder="0"
+                      onChange={(e) => {
+                        const val = e.target.value === '' ? 0 : Number(e.target.value);
+                        setEditingProduct({...editingProduct, precioPush: val});
+                      }}
                       className="w-full bg-black/50 border border-white/10 rounded-2xl py-3 pl-8 pr-4 text-white font-oswald text-xl focus:outline-none focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all"
                     />
                   </div>
@@ -413,8 +419,12 @@ export default function App() {
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-oswald text-lg">$</span>
                     <input
                       type="number"
-                      value={editingProduct.precioPublico}
-                      onChange={(e) => setEditingProduct({...editingProduct, precioPublico: Number(e.target.value)})}
+                      value={editingProduct.precioPublico === 0 ? '' : editingProduct.precioPublico}
+                      placeholder="0"
+                      onChange={(e) => {
+                        const val = e.target.value === '' ? 0 : Number(e.target.value);
+                        setEditingProduct({...editingProduct, precioPublico: val});
+                      }}
                       className="w-full bg-black/50 border border-white/10 rounded-2xl py-3 pl-8 pr-4 text-white font-oswald text-xl focus:outline-none focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all"
                     />
                   </div>
