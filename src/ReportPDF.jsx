@@ -5,7 +5,8 @@ import {
   View, 
   Document, 
   StyleSheet, 
-  Font
+  Font,
+  Image
 } from '@react-pdf/renderer';
 
 // Usaremos los core fonts de react-pdf (Helvetica) para evitar errores de red y formato
@@ -107,8 +108,9 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     marginBottom: 10,
   },
+  colImg: { width: '12%', justifyContent: 'center', alignItems: 'center' },
   colMarca: { width: '15%' },
-  colProducto: { width: '55%' },
+  colProducto: { width: '43%' },
   colPrecio: { width: '15%', textAlign: 'right' },
   colSugerido: { width: '15%', textAlign: 'right' },
   headerText: {
@@ -136,6 +138,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica-Bold',
     fontWeight: 'bold',
     color: '#000000',
+  },
+  productImage: {
+    width: 32,
+    height: 32,
+    borderRadius: 4,
+    objectFit: 'cover'
+  },
+  imagePlaceholder: {
+    width: 32,
+    height: 32,
+    borderRadius: 4,
+    backgroundColor: '#F3F4F6'
   },
   rowTextSabor: {
     fontSize: 8,
@@ -245,6 +259,7 @@ const ReportPDF = ({ products, currentDate, totalProducts }) => {
 
           {/* Table Header */}
           <View style={styles.tableHeader}>
+            <View style={styles.colImg}><Text style={styles.headerText}>Img</Text></View>
             <View style={styles.colMarca}><Text style={styles.headerText}>Marca</Text></View>
             <View style={styles.colProducto}><Text style={styles.headerText}>Producto / Sabor</Text></View>
             <View style={styles.colPrecio}><Text style={styles.headerText}>PushSport</Text></View>
@@ -254,6 +269,13 @@ const ReportPDF = ({ products, currentDate, totalProducts }) => {
           {/* Table Body */}
           {products.map((product) => (
             <View key={product.id} style={styles.tableRow} wrap={false}>
+              <View style={styles.colImg}>
+                {product.image ? (
+                  <Image src={product.image} style={styles.productImage} />
+                ) : (
+                  <View style={styles.imagePlaceholder} />
+                )}
+              </View>
               <View style={styles.colMarca}>
                 <Text style={styles.rowTextMarca}>{product.marca}</Text>
               </View>

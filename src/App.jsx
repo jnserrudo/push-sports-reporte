@@ -8,55 +8,60 @@ import {
   Box, 
   Activity,
   Loader2,
-  Download
+  Download,
+  Store,
+  Plus,
+  Trash2,
+  ListPlus
 } from 'lucide-react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import ReportPDF from './ReportPDF';
+import ShopReportPDF from './ShopReportPDF';
 
 // --- DATOS INICIALES (ESTÁTICOS) ---
 const INITIAL_PRODUCTS = [
-  { id: 1, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: 'PASTA DE MANÍ Y ARÁND', precioPush: 20000, precioPublico: 0 },
-  { id: 2, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0 },
-  { id: 3, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0 },
-  { id: 4, marca: 'STAR NUTRITION', producto: 'BCAA - 120 CAPS', sabor: '-', precioPush: 18000, precioPublico: 22000 },
-  { id: 5, marca: 'STAR NUTRITION', producto: 'BCAA MTOR 270 GR', sabor: '-', precioPush: 26000, precioPublico: 29000 },
-  { id: 6, marca: 'ONE FIT', producto: 'BCAA PUSH 300 GR', sabor: '-', precioPush: 17000, precioPublico: 22000 },
-  { id: 7, marca: 'STAR NUTRITION', producto: 'CARNITINA - 60COMPRIMIDOS', sabor: '-', precioPush: 15000, precioPublico: 18000 },
-  { id: 8, marca: 'STAR NUTRITION', producto: 'CITRATO DE MAGNESIO 500 GR', sabor: 'NEUTRO', precioPush: 27000, precioPublico: 32000 },
-  { id: 9, marca: 'STAR NUTRITION', producto: 'STAR NUTRITION', sabor: 'FRUTOS ROJOS', precioPush: 27000, precioPublico: 32000 },
-  { id: 10, marca: 'ONE FIT', producto: 'CITRATO DE MAGNESIO 150 GR', sabor: '-', precioPush: 12000, precioPublico: 17000 },
-  { id: 11, marca: 'ONE FIT', producto: 'COLAGENO 360 GR', sabor: 'LIMÓN', precioPush: 21000, precioPublico: 26000 },
-  { id: 12, marca: 'STAR NUTRITION', producto: 'COLAGENO 360 GR', sabor: 'FRUTOS ROJOS', precioPush: 21000, precioPublico: 26000 },
-  { id: 13, marca: 'ONE FIT', producto: 'COLAGENO - 260 GR', sabor: 'NARANJA', precioPush: 14000, precioPublico: 18000 },
-  { id: 14, marca: 'ONE FIT', producto: 'COLAGENO - 260 GR', sabor: 'FRUTILLA', precioPush: 14000, precioPublico: 18000 },
-  { id: 15, marca: 'STAR NUTRITION', producto: 'CREATINA 300 GR', sabor: 'Neutro-Frutos Rojos', precioPush: 25000, precioPublico: 30000 },
-  { id: 16, marca: 'ONE FIT', producto: 'CREATINA 200 GR', sabor: '-', precioPush: 16000, precioPublico: 21000 },
-  { id: 17, marca: 'ONE FIT', producto: 'Creatina 500 grs ONE FIT POTE', sabor: '-', precioPush: 28000, precioPublico: 33000 },
-  { id: 18, marca: 'GRANGER', producto: 'CUPCAKE PROTEICO', sabor: 'CHOCOLATE', precioPush: 12000, precioPublico: 14000 },
-  { id: 19, marca: 'STAR NUTRITION', producto: 'MULTIVITAMÍNICO - 60COMPRIMIDOS', sabor: '-', precioPush: 19000, precioPublico: 24000 },
-  { id: 20, marca: 'ONE FIT', producto: 'OMEGA 3 - 30 COMPRIMIDOS', sabor: '-', precioPush: 23000, precioPublico: 28000 },
-  { id: 21, marca: 'STAR NUTRITION', producto: 'OMEGA 3 - 60 COMPRIMIDOS', sabor: '-', precioPush: 30000, precioPublico: 35000 },
-  { id: 22, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'CHOCOLATE', precioPush: 12000, precioPublico: 14000 },
-  { id: 23, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'VAINILLA', precioPush: 12000, precioPublico: 14000 },
-  { id: 24, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'QUESO', precioPush: 12000, precioPublico: 14000 },
-  { id: 25, marca: 'GRANGER', producto: 'GALLETAS', sabor: 'CHIP CHOCÓ/VAINILLA', precioPush: 9000, precioPublico: 12000 },
-  { id: 26, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO 3D RIPPES', sabor: 'LIMÓN', precioPush: 34000, precioPublico: 40000 },
-  { id: 27, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO TNT DINAMITA', sabor: 'ACAÍ POWER', precioPush: 23000, precioPublico: 28000 },
-  { id: 28, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO TNT DINAMITA', sabor: 'BLUE RAZZ', precioPush: 23000, precioPublico: 28000 },
-  { id: 29, marca: 'ONE FIT', producto: 'PRE-ENTRENO - 30 SERV', sabor: 'LIMON', precioPush: 17000, precioPublico: 20000 },
-  { id: 30, marca: 'ONE FIT', producto: 'PRE-ENTRENO - 30 SERV', sabor: 'UVA', precioPush: 17000, precioPublico: 20000 },
-  { id: 31, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'VAINILLA', precioPush: 42000, precioPublico: 47000 },
-  { id: 32, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'CHOCOLATE', precioPush: 42000, precioPublico: 47000 },
-  { id: 33, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'FRUTILLA', precioPush: 42000, precioPublico: 47000 },
-  { id: 34, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'COOCKIES', precioPush: 42000, precioPublico: 47000 },
-  { id: 35, marca: 'STAR NUTRITION', producto: 'PROTEINA JUST PLANT', sabor: 'NEUTRO', precioPush: 37000, precioPublico: 42000 },
-  { id: 36, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'VAINILLA', precioPush: 26000, precioPublico: 31000 },
-  { id: 37, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'CHOCOLATE', precioPush: 26000, precioPublico: 31000 },
-  { id: 38, marca: 'ONE FIT', producto: 'QUEMADOR', sabor: '-', precioPush: 14000, precioPublico: 19000 },
-  { id: 39, marca: 'STAR NUTRITION', producto: 'RESVERATROL', sabor: '-', precioPush: 18000, precioPublico: 22000 },
-  { id: 40, marca: 'ONE FIT', producto: 'SHAKER', sabor: 'GRIS', precioPush: 12000, precioPublico: 17000 },
-  { id: 41, marca: 'ONE FIT', producto: 'SHAKER', sabor: 'ROSA', precioPush: 12000, precioPublico: 17000 },
-  { id: 42, marca: 'STAR NUTRITION', producto: 'VITAMINA C STAR NUTRITION', sabor: '-', precioPush: 8000, precioPublico: 12000 },
+  { id: 1, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: 'PASTA DE MANÍ Y ARÁND', precioPush: 20000, precioPublico: 0, image: null },
+  { id: 2, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0, image: null },
+  { id: 3, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0, image: null },
+  { id: 4, marca: 'STAR NUTRITION', producto: 'BCAA - 120 CAPS', sabor: '-', precioPush: 18000, precioPublico: 22000, image: '/productos_push_sports/img_bcaa_star_2000.jpeg' },
+  { id: 5, marca: 'STAR NUTRITION', producto: 'BCAA MTOR 270 GR', sabor: '-', precioPush: 26000, precioPublico: 29000, image: null },
+  { id: 6, marca: 'ONE FIT', producto: 'BCAA PUSH 300 GR', sabor: '-', precioPush: 17000, precioPublico: 22000, image: null },
+  { id: 7, marca: 'STAR NUTRITION', producto: 'CARNITINA - 60COMPRIMIDOS', sabor: '-', precioPush: 15000, precioPublico: 18000, image: '/productos_push_sports/img_carnitina_star.jpeg' },
+  { id: 8, marca: 'STAR NUTRITION', producto: 'CITRATO DE MAGNESIO 500 GR', sabor: 'NEUTRO', precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_citrato_magnesio_star.jpeg' },
+  { id: 9, marca: 'STAR NUTRITION', producto: 'STAR NUTRITION', sabor: 'FRUTOS ROJOS', precioPush: 27000, precioPublico: 32000, image: null },
+  { id: 10, marca: 'ONE FIT', producto: 'CITRATO DE MAGNESIO 150 GR', sabor: '-', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_citrato_magnesio_onefit.jpeg' },
+  { id: 11, marca: 'ONE FIT', producto: 'COLAGENO 360 GR', sabor: 'LIMÓN', precioPush: 21000, precioPublico: 26000, image: '/productos_push_sports/img_collagen_plus_limon.jpeg' },
+  { id: 12, marca: 'STAR NUTRITION', producto: 'COLAGENO 360 GR', sabor: 'FRUTOS ROJOS', precioPush: 21000, precioPublico: 26000, image: '/productos_push_sports/img_collagen_whey_chocolate.jpeg' },
+  { id: 13, marca: 'ONE FIT', producto: 'COLAGENO - 260 GR', sabor: 'NARANJA', precioPush: 14000, precioPublico: 18000, image: '/productos_push_sports/img_collagen_sport_naranja.jpeg' },
+  { id: 14, marca: 'ONE FIT', producto: 'COLAGENO - 260 GR', sabor: 'FRUTILLA', precioPush: 14000, precioPublico: 18000, image: '/productos_push_sports/img_collagen_onefit_frutilla.jpeg' },
+  { id: 15, marca: 'STAR NUTRITION', producto: 'CREATINA 300 GR', sabor: 'Neutro-Frutos Rojos', precioPush: 25000, precioPublico: 30000, image: '/productos_push_sports/img_creatina_star_monohydrate.jpeg' },
+  { id: 16, marca: 'ONE FIT', producto: 'CREATINA 200 GR', sabor: '-', precioPush: 16000, precioPublico: 21000, image: null },
+  { id: 17, marca: 'ONE FIT', producto: 'Creatina 500 grs ONE FIT POTE', sabor: '-', precioPush: 28000, precioPublico: 33000, image: null },
+  { id: 18, marca: 'GRANGER', producto: 'CUPCAKE PROTEICO', sabor: 'CHOCOLATE', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_cupcake_chocolate.jpeg' },
+  { id: 19, marca: 'STAR NUTRITION', producto: 'MULTIVITAMÍNICO - 60COMPRIMIDOS', sabor: '-', precioPush: 19000, precioPublico: 24000, image: null },
+  { id: 20, marca: 'ONE FIT', producto: 'OMEGA 3 - 30 COMPRIMIDOS', sabor: '-', precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_omega_3_onefit.jpeg' },
+  { id: 21, marca: 'STAR NUTRITION', producto: 'OMEGA 3 - 60 COMPRIMIDOS', sabor: '-', precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_omega_3_star.jpeg' },
+  { id: 22, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'CHOCOLATE', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_chocolate.jpeg' },
+  { id: 23, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'VAINILLA', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_vainilla.jpeg' },
+  { id: 24, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'QUESO', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_salado_queso.jpeg' },
+  { id: 25, marca: 'GRANGER', producto: 'GALLETAS', sabor: 'CHIP CHOCÓ/VAINILLA', precioPush: 9000, precioPublico: 12000, image: '/productos_push_sports/img_cookies_granger.jpeg' },
+  { id: 26, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO 3D RIPPES', sabor: 'LIMÓN', precioPush: 34000, precioPublico: 40000, image: '/productos_push_sports/img_pre_entreno_3d_ripped.jpeg' },
+  { id: 27, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO TNT DINAMITA', sabor: 'ACAÍ POWER', precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_pre_entreno_tnt.jpeg' },
+  { id: 28, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO TNT DINAMITA', sabor: 'BLUE RAZZ', precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_pre_entreno_tnt.jpeg' },
+  { id: 29, marca: 'ONE FIT', producto: 'PRE-ENTRENO - 30 SERV', sabor: 'LIMON', precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_pump_v8.jpeg' },
+  { id: 30, marca: 'ONE FIT', producto: 'PRE-ENTRENO - 30 SERV', sabor: 'UVA', precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_friction.jpeg' },
+  { id: 31, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'VAINILLA', precioPush: 42000, precioPublico: 47000, image: null },
+  { id: 32, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'CHOCOLATE', precioPush: 42000, precioPublico: 47000, image: null },
+  { id: 33, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'FRUTILLA', precioPush: 42000, precioPublico: 47000, image: null },
+  { id: 34, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'COOCKIES', precioPush: 42000, precioPublico: 47000, image: null },
+  { id: 35, marca: 'STAR NUTRITION', producto: 'PROTEINA JUST PLANT', sabor: 'NEUTRO', precioPush: 37000, precioPublico: 42000, image: null },
+  { id: 36, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'VAINILLA', precioPush: 26000, precioPublico: 31000, image: null },
+  { id: 37, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'CHOCOLATE', precioPush: 26000, precioPublico: 31000, image: null },
+  { id: 38, marca: 'ONE FIT', producto: 'QUEMADOR', sabor: '-', precioPush: 14000, precioPublico: 19000, image: null },
+  { id: 39, marca: 'STAR NUTRITION', producto: 'RESVERATROL', sabor: '-', precioPush: 18000, precioPublico: 22000, image: null },
+  { id: 40, marca: 'ONE FIT', producto: 'SHAKER', sabor: 'GRIS', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_shaker_gris.jpeg' },
+  { id: 41, marca: 'ONE FIT', producto: 'SHAKER', sabor: 'ROSA', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_shaker_rosa.jpeg' },
+  { id: 42, marca: 'STAR NUTRITION', producto: 'VITAMINA C STAR NUTRITION', sabor: '-', precioPush: 8000, precioPublico: 12000, image: null },
 ];
 
 export default function App() {
@@ -65,6 +70,9 @@ export default function App() {
   const [currentDate, setCurrentDate] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [isReportMode, setIsReportMode] = useState(false);
+  const [isShopReportMode, setIsShopReportMode] = useState(false);
+  const [shopName, setShopName] = useState('');
+  const [shopItems, setShopItems] = useState([]);
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState(null);
 
@@ -142,8 +150,205 @@ export default function App() {
     window.scrollTo(0, 0);
   };
 
+  const handleGenerateShopPDFMode = () => {
+    setIsShopReportMode(true);
+    window.scrollTo(0, 0);
+  };
+
+  const handleAddShopItem = (product) => {
+    setShopItems([...shopItems, { 
+      product, 
+      stockAnterior: 0, 
+      cantidadDejada: 0,
+      precioPush: product.precioPush,
+      precioPublico: product.precioPublico
+    }]);
+  };
+
+  const handleRemoveShopItem = (index) => {
+    setShopItems(shopItems.filter((_, i) => i !== index));
+  };
+
+  const updateShopItem = (index, field, value) => {
+    const newItems = [...shopItems];
+    let parsedValue = value === '' ? '' : Number(value);
+    // Prevent negative numbers
+    if (parsedValue !== '' && parsedValue < 0) parsedValue = 0;
+    newItems[index][field] = parsedValue;
+    setShopItems(newItems);
+  };
+
   const totalProducts = products.length;
+  // Validations for generating PDF
+  const hasValidName = shopName.trim().length > 0;
+  const hasValidItems = shopItems.length > 0 && shopItems.some(i => i.cantidadDejada > 0 || i.stockAnterior > 0);
+  const isValidReport = hasValidName && hasValidItems;
   const avgPushPrice = products.reduce((acc, curr) => acc + curr.precioPush, 0) / totalProducts;
+
+  if (isShopReportMode) {
+    return (
+      <div className="min-h-screen bg-[#0F0F0F] text-white p-4 md:p-10 font-sans">
+        {/* Toolbar superior */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <h1 className="font-oswald text-3xl font-bold uppercase tracking-tighter">
+              Modo <span className="text-[#00A3CC]">Comercio</span>
+            </h1>
+            <p className="text-gray-400 text-xs uppercase tracking-widest mt-1">Configuración de Reporte por Sucursal</p>
+          </div>
+          <div className="flex gap-4 w-full md:w-auto mt-4 md:mt-0">
+            <button 
+              onClick={() => setIsShopReportMode(false)}
+              className="bg-white/5 hover:bg-white/10 text-white px-6 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all cursor-pointer flex-1 md:flex-none"
+            >
+              <X className="w-4 h-4" /> Cancelar
+            </button>
+            {isValidReport ? (
+              <PDFDownloadLink 
+                document={<ShopReportPDF shopName={shopName} items={shopItems} currentDate={currentDate} />} 
+                fileName={`Reporte_${shopName.replace(/ /g, '_')}_${currentDate.replace(/\//g, '-')}.pdf`}
+                className="bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all font-bold cursor-pointer shadow-[0_0_20px_rgba(0,163,204,0.4)] flex-1 md:flex-none"
+              >
+                {({ loading }) => (
+                  <>
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                    {loading ? 'Generando...' : 'Descargar PDF'}
+                  </>
+                )}
+              </PDFDownloadLink>
+            ) : (
+              <button 
+                disabled
+                className="bg-gray-800 text-gray-500 px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center justify-center gap-2 font-bold cursor-not-allowed flex-1 md:flex-none"
+                title="Debe ingresar un nombre de comercio y al menos un producto con valores mayores a 0."
+              >
+                <Download className="w-4 h-4" /> Validar Campos
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Panel Izquierdo: Selección de Productos */}
+          <div className="lg:col-span-1 glass-panel rounded-[32px] overflow-hidden flex flex-col h-[75vh]">
+            <div className="p-6 border-b border-white/5 bg-black/20">
+              <h2 className="font-oswald text-xl font-bold uppercase tracking-tighter">Añadir al Listado</h2>
+            </div>
+            <div className="p-4 overflow-y-auto flex-1 space-y-3 custom-scrollbar">
+              {products.map(prod => (
+                <div key={prod.id} className="bg-black/40 border border-white/5 rounded-2xl p-4 flex justify-between items-center hover:border-white/20 transition-all gap-4">
+                  <div className="flex items-center gap-4 flex-1">
+                    {prod.image ? (
+                        <img src={prod.image} alt={prod.producto} className="w-16 h-16 rounded-xl object-cover shrink-0" />
+                    ) : (
+                        <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 text-xs font-oswald shrink-0 border border-white/10">IMG</div>
+                    )}
+                    <div className="min-w-0">
+                      <p className="font-bold text-sm md:text-base leading-tight text-white line-clamp-2">{prod.producto}</p>
+                      <p className="text-[10px] md:text-xs text-[#00A3CC] tracking-widest uppercase mt-1 truncate">{prod.marca} {prod.sabor !== '-' && `• ${prod.sabor}`}</p>
+                    </div>
+                  </div>
+                  <button onClick={() => handleAddShopItem(prod)} className="p-3 bg-[#00A3CC]/20 hover:bg-[#00A3CC]/50 text-[#00E5FF] hover:text-white rounded-xl transition-all shrink-0">
+                    <Plus className="w-5 h-5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Panel Derecho: Configuración del Comercio y Lista */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="glass-panel rounded-[32px] p-6">
+               <label className="block text-xs font-oswald uppercase tracking-widest text-[#00A3CC] mb-3">
+                  Nombre del Comercio
+               </label>
+               <input
+                  type="text"
+                  value={shopName}
+                  onChange={(e) => setShopName(e.target.value)}
+                  placeholder="Ej: Aconcagua Indumentaria"
+                  className="w-full bg-black/50 border border-white/10 rounded-2xl py-4 px-6 text-white font-bold text-lg focus:outline-none focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-all placeholder:text-gray-600"
+               />
+            </div>
+
+            <div className="glass-panel rounded-[32px] overflow-hidden flex flex-col h-[calc(75vh-120px)]">
+               <div className="p-6 border-b border-white/5 bg-black/20 flex justify-between items-center shrink-0">
+                 <h2 className="font-oswald text-xl font-bold uppercase tracking-tighter">Artículos Añadidos</h2>
+                 <span className="text-xs bg-white/10 px-3 py-1 rounded-full font-bold">{shopItems.length} items</span>
+               </div>
+               
+               <div className="p-4 md:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1">
+                 {shopItems.length === 0 ? (
+                    <div className="text-center py-10 opacity-50 flex flex-col items-center justify-center h-full">
+                       <ListPlus className="w-16 h-16 mx-auto mb-4 text-[#00A3CC]" />
+                       <p className="font-oswald text-xl uppercase tracking-widest text-[#00A3CC]">Lista Vacía</p>
+                       <p className="text-sm text-gray-400 mt-2 max-w-xs mx-auto">Agregue productos desde el panel izquierdo para confeccionar el reporte del comercio.</p>
+                       {!hasValidName && (
+                          <p className="text-xs text-red-400 uppercase tracking-widest mt-4 font-bold border border-red-500/20 bg-red-500/10 px-4 py-2 rounded-full">
+                            Ingrese nombre de comercio
+                          </p>
+                       )}
+                    </div>
+                 ) : (
+                    shopItems.map((item, index) => (
+                      <div key={index} className="bg-black/40 border border-white/5 rounded-3xl p-6 flex flex-col 2xl:flex-row items-start 2xl:items-center justify-between gap-6 hover:border-white/20 transition-all">
+                         <div className="flex items-center gap-5 flex-1 w-full">
+                            {item.product.image ? (
+                                <img src={item.product.image} alt="prod" className="w-16 h-16 md:w-20 md:h-20 rounded-2xl object-cover shrink-0 border border-white/10" />
+                            ) : (
+                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 text-sm shrink-0 font-oswald border border-white/10">IMG</div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                               <p className="font-bold text-white leading-tight text-base md:text-xl line-clamp-2">{item.product.producto}</p>
+                               <p className="text-xs md:text-sm text-[#00A3CC] tracking-widest uppercase mt-1 md:mt-2 truncate">{item.product.marca} {item.product.sabor !== '-' && `• ${item.product.sabor}`}</p>
+                            </div>
+                         </div>
+                         
+                         <div className="flex flex-col w-full 2xl:w-auto gap-4 mt-2 2xl:mt-0">
+                           {/* Fila de Stocks */}
+                           <div className="flex items-end gap-3 justify-end w-full">
+                              <div className="flex-1 max-w-[100px] shrink-0">
+                                <label className="block text-[10px] md:text-xs uppercase text-gray-500 mb-1 font-bold">Stock Ant.</label>
+                                <input type="number" min="0" value={item.stockAnterior === '' ? '' : item.stockAnterior} onChange={(e) => updateShopItem(index, 'stockAnterior', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-xl py-2 px-2 text-center focus:outline-none focus:border-[#00E5FF] text-white" />
+                              </div>
+                              <div className="flex-1 max-w-[100px] shrink-0">
+                                <label className="block text-[10px] md:text-xs uppercase text-[#00E5FF] mb-1 font-bold">Dejado</label>
+                                <input type="number" min="0" value={item.cantidadDejada === '' ? '' : item.cantidadDejada} onChange={(e) => updateShopItem(index, 'cantidadDejada', e.target.value)} placeholder="0" className="w-full bg-[#00A3CC]/20 border border-[#00A3CC]/50 rounded-xl py-2 px-2 text-center focus:outline-none focus:border-[#00E5FF] focus:bg-[#00A3CC]/30 text-white font-bold transition-all" />
+                              </div>
+                              <div className="w-16 md:w-24 shrink-0">
+                                <label className="block text-[10px] md:text-xs uppercase text-gray-500 mb-1 font-bold text-center">Total</label>
+                                <div className="w-full bg-white/5 border border-white/5 rounded-xl py-2 px-2 text-center text-white font-bold text-sm md:text-base">{(item.stockAnterior || 0) + (item.cantidadDejada || 0)}</div>
+                              </div>
+                           </div>
+
+                           {/* Fila de Precios (Editables individualmente) */}
+                           <div className="flex items-end gap-3 justify-end w-full">
+                              <div className="flex-1 max-w-[120px] shrink-0 relative">
+                                <label className="block text-[10px] uppercase text-[#00A3CC] mb-1 font-bold">P. Push ($)</label>
+                                <input type="number" min="0" value={item.precioPush === '' ? '' : item.precioPush} onChange={(e) => updateShopItem(index, 'precioPush', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-xl py-2 px-2 pl-6 text-left focus:outline-none focus:border-[#00E5FF] text-white text-sm" />
+                                <span className="absolute left-2.5 bottom-2.5 text-gray-500 text-xs">$</span>
+                              </div>
+                              <div className="flex-1 max-w-[120px] shrink-0 relative">
+                                <label className="block text-[10px] uppercase text-gray-500 mb-1 font-bold">P. Público ($)</label>
+                                <input type="number" min="0" value={item.precioPublico === '' ? '' : item.precioPublico} onChange={(e) => updateShopItem(index, 'precioPublico', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-xl py-2 px-2 pl-6 text-left focus:outline-none focus:border-[#00E5FF] text-white text-sm" />
+                                <span className="absolute left-2.5 bottom-2.5 text-gray-500 text-xs">$</span>
+                              </div>
+                              <button onClick={() => handleRemoveShopItem(index)} className="p-2 sm:p-3 bg-red-500/10 hover:bg-red-500/30 text-red-500 hover:text-red-400 rounded-xl transition-all shrink-0">
+                                <Trash2 className="w-4 h-4 md:w-5 md:h-5" />
+                              </button>
+                           </div>
+                         </div>
+                      </div>
+                    ))
+                 )}
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isReportMode) {
     return (
@@ -271,13 +476,22 @@ export default function App() {
             </div>
           </div>
           
-          <button 
-            onClick={handleGeneratePDF}
-            className="group flex items-center justify-center gap-2 bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] font-oswald font-bold px-6 py-4 md:py-3 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(0,163,204,0.4)] hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] uppercase tracking-tight w-full md:w-auto cursor-pointer active:scale-95 relative z-[100]"
-          >
-            <Printer className="w-5 h-5 group-hover:scale-110 transition-transform" strokeWidth={2.5} />
-            VER VISTA PREVIA
-          </button>
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto mt-4 md:mt-0">
+            <button 
+              onClick={handleGenerateShopPDFMode}
+              className="group flex flex-1 md:flex-none items-center justify-center gap-2 bg-[#1A1A1A] hover:bg-[#2A2A2A] border border-white/10 text-white font-oswald font-bold px-6 py-4 md:py-3 rounded-full transition-all duration-300 uppercase tracking-tight cursor-pointer active:scale-95 text-sm"
+            >
+              <Store className="w-4 h-4 text-[#00A3CC]" strokeWidth={2.5} />
+              REPORTE COMERCIO
+            </button>
+            <button 
+              onClick={handleGeneratePDF}
+              className="group flex flex-1 md:flex-none items-center justify-center gap-2 bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] font-oswald font-bold px-6 py-4 md:py-3 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(0,163,204,0.4)] hover:shadow-[0_0_30px_rgba(0,229,255,0.6)] uppercase tracking-tight cursor-pointer active:scale-95 text-sm relative z-[100]"
+            >
+              <Printer className="w-5 h-5 group-hover:scale-110 transition-transform" strokeWidth={2.5} />
+              VISTA PREVIA GLOBAL
+            </button>
+          </div>
         </header>
 
         {/* MÉTRICAS */}
