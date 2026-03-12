@@ -1,4 +1,26 @@
 import React, { useState, useEffect } from 'react';
+
+// Polyfill minimal de Buffer para compatibilidad con @react-pdf/renderer en navegadores modernos (Vite)
+if (typeof window !== 'undefined' && !window.Buffer) {
+    window.Buffer = {
+        isBuffer: (arg) => arg && arg._isBuffer,
+        from: (data) => {
+            if (typeof data === 'string') {
+                const b = new TextEncoder().encode(data);
+                b._isBuffer = true;
+                return b;
+            }
+            const b = new Uint8Array(data);
+            b._isBuffer = true;
+            return b;
+        },
+        alloc: (size) => {
+            const b = new Uint8Array(size);
+            b._isBuffer = true;
+            return b;
+        }
+    };
+}
 import { 
   Printer, 
   Edit2, 
@@ -12,7 +34,8 @@ import {
   Store,
   Plus,
   Trash2,
-  ListPlus
+  ListPlus,
+  ArrowLeft
 } from 'lucide-react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import ReportPDF from './ReportPDF';
@@ -20,25 +43,25 @@ import ShopReportPDF from './ShopReportPDF';
 
 // --- DATOS INICIALES (ESTÁTICOS) ---
 const INITIAL_PRODUCTS = [
-  { id: 1, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: 'PASTA DE MANÍ Y ARÁND', precioPush: 20000, precioPublico: 0, image: null },
-  { id: 2, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0, image: null },
-  { id: 3, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0, image: null },
+  { id: 1, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: 'PASTA DE MANÍ Y ARÁND', precioPush: 20000, precioPublico: 0, image: '/productos_push_sports/img_integra_barritas_caja.jpeg' },
+  { id: 2, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0, image: '/productos_push_sports/img_integra_barritas_caja.jpeg' },
+  { id: 3, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0, image: '/productos_push_sports/img_integra_barritas_caja.jpeg' },
   { id: 4, marca: 'STAR NUTRITION', producto: 'BCAA - 120 CAPS', sabor: '-', precioPush: 18000, precioPublico: 22000, image: '/productos_push_sports/img_bcaa_star_2000.jpeg' },
-  { id: 5, marca: 'STAR NUTRITION', producto: 'BCAA MTOR 270 GR', sabor: '-', precioPush: 26000, precioPublico: 29000, image: null },
-  { id: 6, marca: 'ONE FIT', producto: 'BCAA PUSH 300 GR', sabor: '-', precioPush: 17000, precioPublico: 22000, image: null },
+  { id: 5, marca: 'STAR NUTRITION', producto: 'BCAA MTOR 270 GR', sabor: '-', precioPush: 26000, precioPublico: 29000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
+  { id: 6, marca: 'ONE FIT', producto: 'BCAA PUSH 300 GR', sabor: '-', precioPush: 17000, precioPublico: 22000, image: '/productos_push_sports/img_bcaa_push_300g_one_fit.jpeg' },
   { id: 7, marca: 'STAR NUTRITION', producto: 'CARNITINA - 60COMPRIMIDOS', sabor: '-', precioPush: 15000, precioPublico: 18000, image: '/productos_push_sports/img_carnitina_star.jpeg' },
   { id: 8, marca: 'STAR NUTRITION', producto: 'CITRATO DE MAGNESIO 500 GR', sabor: 'NEUTRO', precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_citrato_magnesio_star.jpeg' },
-  { id: 9, marca: 'STAR NUTRITION', producto: 'STAR NUTRITION', sabor: 'FRUTOS ROJOS', precioPush: 27000, precioPublico: 32000, image: null },
+  { id: 9, marca: 'STAR NUTRITION', producto: 'BCAA MTOR 270 GR', sabor: 'FRUTOS ROJOS', precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
   { id: 10, marca: 'ONE FIT', producto: 'CITRATO DE MAGNESIO 150 GR', sabor: '-', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_citrato_magnesio_onefit.jpeg' },
   { id: 11, marca: 'ONE FIT', producto: 'COLAGENO 360 GR', sabor: 'LIMÓN', precioPush: 21000, precioPublico: 26000, image: '/productos_push_sports/img_collagen_plus_limon.jpeg' },
   { id: 12, marca: 'STAR NUTRITION', producto: 'COLAGENO 360 GR', sabor: 'FRUTOS ROJOS', precioPush: 21000, precioPublico: 26000, image: '/productos_push_sports/img_collagen_whey_chocolate.jpeg' },
   { id: 13, marca: 'ONE FIT', producto: 'COLAGENO - 260 GR', sabor: 'NARANJA', precioPush: 14000, precioPublico: 18000, image: '/productos_push_sports/img_collagen_sport_naranja.jpeg' },
   { id: 14, marca: 'ONE FIT', producto: 'COLAGENO - 260 GR', sabor: 'FRUTILLA', precioPush: 14000, precioPublico: 18000, image: '/productos_push_sports/img_collagen_onefit_frutilla.jpeg' },
   { id: 15, marca: 'STAR NUTRITION', producto: 'CREATINA 300 GR', sabor: 'Neutro-Frutos Rojos', precioPush: 25000, precioPublico: 30000, image: '/productos_push_sports/img_creatina_star_monohydrate.jpeg' },
-  { id: 16, marca: 'ONE FIT', producto: 'CREATINA 200 GR', sabor: '-', precioPush: 16000, precioPublico: 21000, image: null },
-  { id: 17, marca: 'ONE FIT', producto: 'Creatina 500 grs ONE FIT POTE', sabor: '-', precioPush: 28000, precioPublico: 33000, image: null },
-  { id: 18, marca: 'GRANGER', producto: 'CUPCAKE PROTEICO', sabor: 'CHOCOLATE', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_cupcake_chocolate.jpeg' },
-  { id: 19, marca: 'STAR NUTRITION', producto: 'MULTIVITAMÍNICO - 60COMPRIMIDOS', sabor: '-', precioPush: 19000, precioPublico: 24000, image: null },
+  { id: 16, marca: 'ONE FIT', producto: 'CREATINA 200 GR', sabor: '-', precioPush: 16000, precioPublico: 21000, image: '/productos_push_sports/img_one_fit_creatina_200g.jpeg' },
+  { id: 17, marca: 'ONE FIT', producto: 'Creatina 500 grs ONE FIT POTE', sabor: '-', precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' },
+  { id: 18, marca: 'GRANGER FOODS', producto: 'CUPCAKE PROTEICO - 360 GR', sabor: 'CHOCOLATE', precioPush: 10000, precioPublico: 15000, image: '/productos_push_sports/img_cupcake_chocolate.jpeg' },
+  { id: 19, marca: 'STAR NUTRITION', producto: 'MULTIVITAMÍNICO - 60COMPRIMIDOS', sabor: '-', precioPush: 19000, precioPublico: 24000, image: '/productos_push_sports/img_multivitaminico_star_nutrition.jpeg' },
   { id: 20, marca: 'ONE FIT', producto: 'OMEGA 3 - 30 COMPRIMIDOS', sabor: '-', precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_omega_3_onefit.jpeg' },
   { id: 21, marca: 'STAR NUTRITION', producto: 'OMEGA 3 - 60 COMPRIMIDOS', sabor: '-', precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_omega_3_star.jpeg' },
   { id: 22, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'CHOCOLATE', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_chocolate.jpeg' },
@@ -50,18 +73,22 @@ const INITIAL_PRODUCTS = [
   { id: 28, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO TNT DINAMITA', sabor: 'BLUE RAZZ', precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_pre_entreno_tnt.jpeg' },
   { id: 29, marca: 'ONE FIT', producto: 'PRE-ENTRENO - 30 SERV', sabor: 'LIMON', precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_pump_v8.jpeg' },
   { id: 30, marca: 'ONE FIT', producto: 'PRE-ENTRENO - 30 SERV', sabor: 'UVA', precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_friction.jpeg' },
-  { id: 31, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'VAINILLA', precioPush: 42000, precioPublico: 47000, image: null },
-  { id: 32, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'CHOCOLATE', precioPush: 42000, precioPublico: 47000, image: null },
-  { id: 33, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'FRUTILLA', precioPush: 42000, precioPublico: 47000, image: null },
-  { id: 34, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'COOCKIES', precioPush: 42000, precioPublico: 47000, image: null },
-  { id: 35, marca: 'STAR NUTRITION', producto: 'PROTEINA JUST PLANT', sabor: 'NEUTRO', precioPush: 37000, precioPublico: 42000, image: null },
-  { id: 36, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'VAINILLA', precioPush: 26000, precioPublico: 31000, image: null },
-  { id: 37, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'CHOCOLATE', precioPush: 26000, precioPublico: 31000, image: null },
-  { id: 38, marca: 'ONE FIT', producto: 'QUEMADOR', sabor: '-', precioPush: 14000, precioPublico: 19000, image: null },
-  { id: 39, marca: 'STAR NUTRITION', producto: 'RESVERATROL', sabor: '-', precioPush: 18000, precioPublico: 22000, image: null },
+  { id: 31, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'VAINILLA', precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
+  { id: 32, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'CHOCOLATE', precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
+  { id: 33, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'FRUTILLA', precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
+  { id: 34, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'COOCKIES', precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
+  { id: 35, marca: 'STAR NUTRITION', producto: 'PROTEINA JUST PLANT', sabor: 'NEUTRO', precioPush: 37000, precioPublico: 42000, image: '/productos_push_sports/img_generic_4.jpeg' },
+  { id: 36, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'VAINILLA', precioPush: 26000, precioPublico: 31000, image: '/productos_push_sports/img_one_fit_whey_protein.jpeg' },
+  { id: 37, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'CHOCOLATE', precioPush: 26000, precioPublico: 31000, image: '/productos_push_sports/img_one_fit_whey_protein.jpeg' },
+  { id: 38, marca: 'ONE FIT', producto: 'QUEMADOR', sabor: '-', precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/img_quemador_fat_destroyer_one_fit.jpeg' },
+  { id: 39, marca: 'STAR NUTRITION', producto: 'RESVERATROL', sabor: '-', precioPush: 18000, precioPublico: 22000, image: '/productos_push_sports/img_generic_13.jpeg' },
   { id: 40, marca: 'ONE FIT', producto: 'SHAKER', sabor: 'GRIS', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_shaker_gris.jpeg' },
   { id: 41, marca: 'ONE FIT', producto: 'SHAKER', sabor: 'ROSA', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_shaker_rosa.jpeg' },
-  { id: 42, marca: 'STAR NUTRITION', producto: 'VITAMINA C STAR NUTRITION', sabor: '-', precioPush: 8000, precioPublico: 12000, image: null },
+  { id: 42, marca: 'STAR NUTRITION', producto: 'VITAMINA C STAR NUTRITION', sabor: '-', precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
+  { id: 43, marca: 'STAR NUTRITION', producto: 'EAA´s Essential Aminos (360 gr)', sabor: 'LIMON', precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_eaas_essential_aminos_star.jpeg' },
+  { id: 44, marca: 'ENDURANCE', producto: 'Hydro Plus Endurance', sabor: 'LIMON', precioPush: 15000, precioPublico: 20000, image: '/productos_push_sports/img_generic_12.jpeg' },
+  { id: 45, marca: 'ONE FIT', producto: 'Fat Distroyer 2.0 One Fit (90 caps)', sabor: '-', precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/img_quemador_fat_destroyer_one_fit.jpeg' },
+  { id: 46, marca: 'ONE FIT', producto: 'PRE-ENTRENO Pump V8 (285 gr)', sabor: 'Acaí', precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_pump_v8.jpeg' },
 ];
 
 export default function App() {
@@ -71,6 +98,7 @@ export default function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isReportMode, setIsReportMode] = useState(false);
   const [isShopReportMode, setIsShopReportMode] = useState(false);
+  const [isShopPreviewMode, setIsShopPreviewMode] = useState(false);
   const [shopName, setShopName] = useState('');
   const [shopItems, setShopItems] = useState([]);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -152,6 +180,12 @@ export default function App() {
 
   const handleGenerateShopPDFMode = () => {
     setIsShopReportMode(true);
+    setIsShopPreviewMode(false);
+    window.scrollTo(0, 0);
+  };
+
+  const handleOpenShopPreview = () => {
+    setIsShopPreviewMode(true);
     window.scrollTo(0, 0);
   };
 
@@ -185,9 +219,109 @@ export default function App() {
   const isValidReport = hasValidName && hasValidItems;
   const avgPushPrice = products.reduce((acc, curr) => acc + curr.precioPush, 0) / totalProducts;
 
+  if (isShopPreviewMode) {
+    const totalArticles = shopItems.reduce((acc, curr) => acc + (Number(curr.stockAnterior) || 0) + (Number(curr.cantidadDejada) || 0), 0);
+    return (
+      <div className="min-h-screen bg-[#F9FAFB] text-[#111827] p-4 md:p-10 font-sans">
+        {/* Toolbar no imprimible - Responsive */}
+        <div className="no-print fixed bottom-6 left-1/2 -translate-x-1/2 md:top-6 md:bottom-auto md:right-6 md:left-auto md:translate-x-0 flex flex-col md:flex-row gap-3 md:gap-4 z-[100] pointer-events-auto w-[90%] md:w-auto">
+          <button 
+            onClick={() => setIsShopPreviewMode(false)}
+            className="bg-black/80 hover:bg-black text-white px-6 py-4 md:py-3 rounded-full font-oswald uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2 transition-all backdrop-blur-md border border-white/10 cursor-pointer shadow-xl active:scale-95 w-full md:w-auto"
+          >
+            <ArrowLeft className="w-4 h-4" /> Volver al Editor
+          </button>
+          
+          <PDFDownloadLink 
+            document={<ShopReportPDF shopName={shopName} items={shopItems} currentDate={currentDate} />} 
+            fileName={`Reporte_${shopName.replace(/ /g, '_')}_${currentDate.replace(/\//g, '-')}.pdf`}
+            className="bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] px-8 py-4 md:py-3 rounded-full font-oswald uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2 shadow-2xl transition-all font-bold cursor-pointer hover:scale-105 active:scale-95 w-full md:w-auto"
+          >
+            {({ loading }) => (
+              <>
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                {loading ? 'Preparando...' : 'Descargar PDF'}
+              </>
+            )}
+          </PDFDownloadLink>
+        </div>
+
+        {/* CONTENIDO DEL REPORTE PREMIUM (HTML PREVIEW) */}
+        <div className="max-w-4xl mx-auto bg-[#FFFFFF] shadow-2xl p-6 md:p-10 rounded-2xl md:rounded-[30px] relative overflow-hidden">
+          {/* Decoración */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gray-50 rounded-full opacity-50 -mr-32 -mt-32"></div>
+          <div className="absolute bottom-10 left-10 w-4 h-4 rounded-full bg-[#00A3CC]"></div>
+
+          {/* Header */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-baseline mb-4 md:mb-6 border-b-2 md:border-b-4 border-black pb-2 md:pb-4 gap-4 md:gap-6 relative z-10">
+            <div className="w-full">
+              <h1 className="font-oswald text-3xl md:text-6xl font-black tracking-tighter uppercase leading-none break-words w-full md:max-w-[500px]">
+                {shopName || 'COMERCIO'}
+              </h1>
+              <p className="font-oswald text-[9px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] text-[#00A3CC] uppercase mt-2 font-bold">
+                Reporte de Artículos y Precios
+              </p>
+            </div>
+            <div className="text-left md:text-right shrink-0">
+              <p className="font-oswald text-[8px] md:text-[10px] uppercase tracking-widest text-gray-400 mb-0.5 md:mb-1 font-bold">Fecha Emisión</p>
+              <p className="font-oswald text-base md:text-xl font-bold">{currentDate}</p>
+            </div>
+          </div>
+
+          {/* Tabla */}
+          <div className="relative z-10 overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b-2 md:border-b-4 border-black">
+                  <th className="py-1.5 md:py-2 text-center font-oswald uppercase text-[8px] md:text-[10px] tracking-widest text-[#4B5563] w-[40%] md:w-[50%]">Img</th>
+                  <th className="py-1.5 md:py-2 text-left font-oswald uppercase text-[8px] md:text-[10px] tracking-widest text-[#4B5563] w-[35%] md:w-[28%]">Producto</th>
+                  <th className="py-1.5 md:py-2 text-center font-oswald uppercase text-[8px] md:text-[10px] tracking-widest text-[#4B5563] w-[13%] md:w-[12%]">Detalle</th>
+                  <th className="py-1.5 md:py-2 text-right font-oswald uppercase text-[8px] md:text-[10px] tracking-widest text-[#4B5563] w-[12%] md:w-[10%]">Público</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {shopItems.map((item, idx) => (
+                  <tr key={idx} className="border-b border-gray-100">
+                    <td className="py-1 flex justify-center items-center h-28 md:h-40">
+                      {item.product.image ? (
+                        <img src={item.product.image} className="max-w-[100px] md:max-w-[140px] h-auto rounded-lg object-contain" alt="prod" />
+                      ) : (
+                        <div className="w-[100px] md:w-[140px] h-24 md:h-32 bg-gray-100 rounded-lg"></div>
+                      )}
+                    </td>
+                    <td className="py-2 pr-2">
+                       <p className="text-[10px] md:text-[12px] font-bold text-black uppercase leading-tight line-clamp-2">{item.product.producto}</p>
+                       <p className="text-[8px] md:text-[9px] text-gray-400 mt-0.5 md:mt-1 uppercase tracking-tighter truncate">{item.product.marca} {item.product.sabor !== '-' && `• ${item.product.sabor}`}</p>
+                    </td>
+                    <td className="py-2 text-center">
+                       <div className="flex flex-col gap-0.5 items-center justify-center">
+                          <p className="text-[8px] md:text-[10px] text-[#00A3CC] font-bold uppercase tracking-tighter">Ant: {item.stockAnterior || 0}</p>
+                          <p className="text-[8px] md:text-[10px] text-[#00A3CC] font-bold uppercase tracking-tighter">Dej: {item.cantidadDejada || 0}</p>
+                          <p className="text-[9px] md:text-[12px] text-black font-black uppercase tracking-tighter mt-0.5 md:mt-1 border-t border-gray-100 pt-0.5 md:pt-1 min-w-[50px] md:w-20">Total: {(item.stockAnterior || 0) + (item.cantidadDejada || 0)}</p>
+                       </div>
+                    </td>
+                    <td className="py-1 text-right font-bold text-[10px] md:text-sm whitespace-nowrap">
+                       {item.precioPublico > 0 ? formatPrice(item.precioPublico) : '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 pt-4 border-t border-gray-100 flex justify-center items-center">
+             <p className="font-oswald text-[9px] md:text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-2">
+                TOTAL DE ARTÍCULOS INGRESADOS: {totalArticles}
+             </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isShopReportMode) {
     return (
-      <div className="min-h-screen bg-[#0F0F0F] text-white p-4 md:p-10 font-sans">
+      <div className="min-h-screen bg-[#0F0F0F] text-white p-4 md:p-10 pb-32 md:pb-10 font-sans">
         {/* Toolbar superior */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
@@ -196,18 +330,29 @@ export default function App() {
             </h1>
             <p className="text-gray-400 text-xs uppercase tracking-widest mt-1">Configuración de Reporte por Sucursal</p>
           </div>
-          <div className="flex gap-4 w-full md:w-auto mt-4 md:mt-0">
+
+          <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full md:w-auto items-center mt-4 md:mt-0 fixed bottom-6 left-1/2 -translate-x-1/2 md:static md:translate-x-0 z-[100] px-4 md:px-0 pointer-events-auto">
             <button 
               onClick={() => setIsShopReportMode(false)}
-              className="bg-white/5 hover:bg-white/10 text-white px-6 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all cursor-pointer flex-1 md:flex-none"
+              className="bg-black/80 md:bg-white/5 hover:bg-black md:hover:bg-white/10 text-white px-6 py-4 md:py-3 rounded-full font-oswald uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2 transition-all cursor-pointer w-full md:w-auto backdrop-blur-md border border-white/10 md:border-none shadow-xl md:shadow-none"
             >
               <X className="w-4 h-4" /> Cancelar
             </button>
+            
+            {isValidReport && (
+              <button 
+                onClick={handleOpenShopPreview}
+                className="bg-white hover:bg-gray-200 text-[#0F0F0F] px-8 py-4 md:py-3 rounded-full font-oswald uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2 transition-all font-bold cursor-pointer w-full md:w-auto shadow-xl md:shadow-none"
+              >
+                <Printer className="w-4 h-4" /> Vista Previa
+              </button>
+            )}
+
             {isValidReport ? (
               <PDFDownloadLink 
                 document={<ShopReportPDF shopName={shopName} items={shopItems} currentDate={currentDate} />} 
                 fileName={`Reporte_${shopName.replace(/ /g, '_')}_${currentDate.replace(/\//g, '-')}.pdf`}
-                className="bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all font-bold cursor-pointer shadow-[0_0_20px_rgba(0,163,204,0.4)] flex-1 md:flex-none"
+                className="bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] px-8 py-4 md:py-3 rounded-full font-oswald uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2 transition-all font-bold cursor-pointer shadow-2xl w-full md:w-auto"
               >
                 {({ loading }) => (
                   <>
@@ -219,8 +364,7 @@ export default function App() {
             ) : (
               <button 
                 disabled
-                className="bg-gray-800 text-gray-500 px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center justify-center gap-2 font-bold cursor-not-allowed flex-1 md:flex-none"
-                title="Debe ingresar un nombre de comercio y al menos un producto con valores mayores a 0."
+                className="bg-white/5 text-gray-500 px-8 py-4 md:py-3 rounded-full font-oswald uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2 cursor-not-allowed w-full md:w-auto"
               >
                 <Download className="w-4 h-4" /> Validar Campos
               </button>
@@ -272,7 +416,7 @@ export default function App() {
                />
             </div>
 
-            <div className="glass-panel rounded-[32px] overflow-hidden flex flex-col h-[calc(75vh-120px)]">
+            <div className="glass-panel rounded-[32px] overflow-hidden flex flex-col h-[calc(75vh-120px)] p-4 md:p-6">
                <div className="p-6 border-b border-white/5 bg-black/20 flex justify-between items-center shrink-0">
                  <h2 className="font-oswald text-xl font-bold uppercase tracking-tighter">Artículos Añadidos</h2>
                  <span className="text-xs bg-white/10 px-3 py-1 rounded-full font-bold">{shopItems.length} items</span>
@@ -324,13 +468,8 @@ export default function App() {
 
                            {/* Fila de Precios (Editables individualmente) */}
                            <div className="flex items-end gap-3 justify-end w-full">
-                              <div className="flex-1 max-w-[120px] shrink-0 relative">
-                                <label className="block text-[10px] uppercase text-[#00A3CC] mb-1 font-bold">P. Push ($)</label>
-                                <input type="number" min="0" value={item.precioPush === '' ? '' : item.precioPush} onChange={(e) => updateShopItem(index, 'precioPush', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-xl py-2 px-2 pl-6 text-left focus:outline-none focus:border-[#00E5FF] text-white text-sm" />
-                                <span className="absolute left-2.5 bottom-2.5 text-gray-500 text-xs">$</span>
-                              </div>
-                              <div className="flex-1 max-w-[120px] shrink-0 relative">
-                                <label className="block text-[10px] uppercase text-gray-500 mb-1 font-bold">P. Público ($)</label>
+                              <div className="flex-1 max-w-[150px] shrink-0 relative">
+                                <label className="block text-[10px] uppercase text-gray-500 mb-1 font-bold">P. Público Sug. ($)</label>
                                 <input type="number" min="0" value={item.precioPublico === '' ? '' : item.precioPublico} onChange={(e) => updateShopItem(index, 'precioPublico', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-xl py-2 px-2 pl-6 text-left focus:outline-none focus:border-[#00E5FF] text-white text-sm" />
                                 <span className="absolute left-2.5 bottom-2.5 text-gray-500 text-xs">$</span>
                               </div>
@@ -338,9 +477,9 @@ export default function App() {
                                 <Trash2 className="w-4 h-4 md:w-5 md:h-5" />
                               </button>
                            </div>
-                         </div>
-                      </div>
-                    ))
+                        </div>
+                     </div>
+                   ))
                  )}
                </div>
             </div>
@@ -349,6 +488,7 @@ export default function App() {
       </div>
     );
   }
+
 
   if (isReportMode) {
     return (
