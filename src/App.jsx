@@ -43,52 +43,45 @@ import ShopReportPDF from './ShopReportPDF';
 
 // --- DATOS INICIALES (ESTÁTICOS) ---
 const INITIAL_PRODUCTS = [
-  { id: 1, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: 'PASTA DE MANÍ Y ARÁND', precioPush: 20000, precioPublico: 0, image: '/productos_push_sports/img_integra_barritas_caja.jpeg' },
-  { id: 2, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0, image: '/productos_push_sports/img_integra_barritas_caja.jpeg' },
-  { id: 3, marca: 'INTEGRA', producto: 'BARRITAS PROTEICAS (CAJA 10u)', sabor: '-', precioPush: 20000, precioPublico: 0, image: '/productos_push_sports/img_integra_barritas_caja.jpeg' },
-  { id: 4, marca: 'STAR NUTRITION', producto: 'BCAA - 120 CAPS', sabor: '-', precioPush: 18000, precioPublico: 22000, image: '/productos_push_sports/img_bcaa_star_2000.jpeg' },
-  { id: 5, marca: 'STAR NUTRITION', producto: 'BCAA MTOR 270 GR', sabor: '-', precioPush: 26000, precioPublico: 29000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
-  { id: 6, marca: 'ONE FIT', producto: 'BCAA PUSH 300 GR', sabor: '-', precioPush: 17000, precioPublico: 22000, image: '/productos_push_sports/img_bcaa_push_300g_one_fit.jpeg' },
-  { id: 7, marca: 'STAR NUTRITION', producto: 'CARNITINA - 60COMPRIMIDOS', sabor: '-', precioPush: 15000, precioPublico: 18000, image: '/productos_push_sports/img_carnitina_star.jpeg' },
-  { id: 8, marca: 'STAR NUTRITION', producto: 'CITRATO DE MAGNESIO 500 GR', sabor: 'NEUTRO', precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_citrato_magnesio_star.jpeg' },
-  { id: 9, marca: 'STAR NUTRITION', producto: 'BCAA MTOR 270 GR', sabor: 'FRUTOS ROJOS', precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
-  { id: 10, marca: 'ONE FIT', producto: 'CITRATO DE MAGNESIO 150 GR', sabor: '-', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_citrato_magnesio_onefit.jpeg' },
-  { id: 11, marca: 'ONE FIT', producto: 'COLAGENO 360 GR', sabor: 'LIMÓN', precioPush: 21000, precioPublico: 26000, image: '/productos_push_sports/img_collagen_plus_limon.jpeg' },
-  { id: 12, marca: 'STAR NUTRITION', producto: 'COLAGENO 360 GR', sabor: 'FRUTOS ROJOS', precioPush: 21000, precioPublico: 26000, image: '/productos_push_sports/img_collagen_whey_chocolate.jpeg' },
-  { id: 13, marca: 'ONE FIT', producto: 'COLAGENO - 260 GR', sabor: 'NARANJA', precioPush: 14000, precioPublico: 18000, image: '/productos_push_sports/img_collagen_sport_naranja.jpeg' },
-  { id: 14, marca: 'ONE FIT', producto: 'COLAGENO - 260 GR', sabor: 'FRUTILLA', precioPush: 14000, precioPublico: 18000, image: '/productos_push_sports/img_collagen_onefit_frutilla.jpeg' },
-  { id: 15, marca: 'STAR NUTRITION', producto: 'CREATINA 300 GR', sabor: 'Neutro-Frutos Rojos', precioPush: 25000, precioPublico: 30000, image: '/productos_push_sports/img_creatina_star_monohydrate.jpeg' },
-  { id: 16, marca: 'ONE FIT', producto: 'CREATINA 200 GR', sabor: '-', precioPush: 16000, precioPublico: 21000, image: '/productos_push_sports/img_one_fit_creatina_200g.jpeg' },
-  { id: 17, marca: 'ONE FIT', producto: 'Creatina 500 grs ONE FIT POTE', sabor: '-', precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' },
-  { id: 18, marca: 'GRANGER FOODS', producto: 'CUPCAKE PROTEICO - 360 GR', sabor: 'CHOCOLATE', precioPush: 10000, precioPublico: 15000, image: '/productos_push_sports/img_cupcake_chocolate.jpeg' },
-  { id: 19, marca: 'STAR NUTRITION', producto: 'MULTIVITAMÍNICO - 60COMPRIMIDOS', sabor: '-', precioPush: 19000, precioPublico: 24000, image: '/productos_push_sports/img_multivitaminico_star_nutrition.jpeg' },
-  { id: 20, marca: 'ONE FIT', producto: 'OMEGA 3 - 30 COMPRIMIDOS', sabor: '-', precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_omega_3_onefit.jpeg' },
-  { id: 21, marca: 'STAR NUTRITION', producto: 'OMEGA 3 - 60 COMPRIMIDOS', sabor: '-', precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_omega_3_star.jpeg' },
-  { id: 22, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'CHOCOLATE', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_chocolate.jpeg' },
-  { id: 23, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'VAINILLA', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_vainilla.jpeg' },
-  { id: 24, marca: 'GRANGER', producto: 'PANCAKES', sabor: 'QUESO', precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_salado_queso.jpeg' },
-  { id: 25, marca: 'GRANGER', producto: 'GALLETAS', sabor: 'CHIP CHOCÓ/VAINILLA', precioPush: 9000, precioPublico: 12000, image: '/productos_push_sports/img_cookies_granger.jpeg' },
-  { id: 26, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO 3D RIPPES', sabor: 'LIMÓN', precioPush: 34000, precioPublico: 40000, image: '/productos_push_sports/img_pre_entreno_3d_ripped.jpeg' },
-  { id: 27, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO TNT DINAMITA', sabor: 'ACAÍ POWER', precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_pre_entreno_tnt.jpeg' },
-  { id: 28, marca: 'STAR NUTRITION', producto: 'PRE-ENTRENO TNT DINAMITA', sabor: 'BLUE RAZZ', precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_pre_entreno_tnt.jpeg' },
-  { id: 29, marca: 'ONE FIT', producto: 'PRE-ENTRENO - 30 SERV', sabor: 'LIMON', precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_pump_v8.jpeg' },
-  { id: 30, marca: 'ONE FIT', producto: 'PRE-ENTRENO - 30 SERV', sabor: 'UVA', precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_friction.jpeg' },
-  { id: 31, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'VAINILLA', precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
-  { id: 32, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'CHOCOLATE', precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
-  { id: 33, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'FRUTILLA', precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
-  { id: 34, marca: 'STAR NUTRITION', producto: 'PROTEINA', sabor: 'COOCKIES', precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
-  { id: 35, marca: 'STAR NUTRITION', producto: 'PROTEINA JUST PLANT', sabor: 'NEUTRO', precioPush: 37000, precioPublico: 42000, image: '/productos_push_sports/img_generic_4.jpeg' },
-  { id: 36, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'VAINILLA', precioPush: 26000, precioPublico: 31000, image: '/productos_push_sports/img_one_fit_whey_protein.jpeg' },
-  { id: 37, marca: 'ONE FIT', producto: 'PROTEINA WHEY PROTEIN', sabor: 'CHOCOLATE', precioPush: 26000, precioPublico: 31000, image: '/productos_push_sports/img_one_fit_whey_protein.jpeg' },
-  { id: 38, marca: 'ONE FIT', producto: 'QUEMADOR', sabor: '-', precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/img_quemador_fat_destroyer_one_fit.jpeg' },
-  { id: 39, marca: 'STAR NUTRITION', producto: 'RESVERATROL', sabor: '-', precioPush: 18000, precioPublico: 22000, image: '/productos_push_sports/img_generic_13.jpeg' },
-  { id: 40, marca: 'ONE FIT', producto: 'SHAKER', sabor: 'GRIS', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_shaker_gris.jpeg' },
-  { id: 41, marca: 'ONE FIT', producto: 'SHAKER', sabor: 'ROSA', precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_shaker_rosa.jpeg' },
-  { id: 42, marca: 'STAR NUTRITION', producto: 'VITAMINA C STAR NUTRITION', sabor: '-', precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
-  { id: 43, marca: 'STAR NUTRITION', producto: 'EAA´s Essential Aminos (360 gr)', sabor: 'LIMON', precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_eaas_essential_aminos_star.jpeg' },
-  { id: 44, marca: 'ENDURANCE', producto: 'Hydro Plus Endurance', sabor: 'LIMON', precioPush: 15000, precioPublico: 20000, image: '/productos_push_sports/img_generic_12.jpeg' },
-  { id: 45, marca: 'ONE FIT', producto: 'Fat Distroyer 2.0 One Fit (90 caps)', sabor: '-', precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/img_quemador_fat_destroyer_one_fit.jpeg' },
-  { id: 46, marca: 'ONE FIT', producto: 'PRE-ENTRENO Pump V8 (285 gr)', sabor: 'Acaí', precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_pump_v8.jpeg' },
+  { id: 1, marca: 'STAR NUTRITION', producto: 'Creatina 300 Grs Star', sabores: ['Frutos Rojos'], precioPush: 25000, precioPublico: 30000, image: '/productos_push_sports/img_creatina_star_monohydrate.jpeg' },
+  { id: 2, marca: 'ONE FIT', producto: 'Creatina 200 Grs One Fit', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' },
+  { id: 3, marca: 'ONE FIT', producto: 'Creatina 500 Grs One Fit Pote', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' },
+  { id: 4, marca: 'STAR NUTRITION', producto: 'L-Carnitina Star Nutrition', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
+  { id: 5, marca: 'STAR NUTRITION', producto: 'Proteina Star 1 Kg', sabores: ['Frutilla', 'Chocolate', 'Banana', 'Cookie', 'Vainilla'], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
+  { id: 6, marca: 'STAR NUTRITION', producto: 'Proteina Star 1 Kg (Con Colageno)', sabores: ['Vainilla', 'Chocolate'], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
+  { id: 7, marca: 'STAR NUTRITION', producto: 'Proteina Star Organica', sabores: [], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/img_generic_4.jpeg' },
+  { id: 8, marca: 'ONE FIT', producto: 'Proteina One Fit', sabores: ['Vainilla', 'Frutilla', 'Chocolate'], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' },
+  { id: 9, marca: 'ONE FIT', producto: 'Fat Distroyer 2.0 One Fit (90 Caps)', sabores: [], precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/img_quemador_fat_destroyer_one_fit.jpeg' },
+  { id: 10, marca: 'STAR NUTRITION', producto: 'Bcca Star Limon 270grs (en Polvo)', sabores: ['Limon'], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
+  { id: 11, marca: 'STAR NUTRITION', producto: 'Bcca Star Frutos Rojos 300grs (en Polvo)', sabores: ['Frutos Rojos'], precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
+  { id: 12, marca: 'STAR NUTRITION', producto: 'Bcca Star En Capsulas', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
+  { id: 13, marca: 'ONE FIT', producto: 'Bcca One Fit 300grs', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' },
+  { id: 14, marca: 'STAR NUTRITION', producto: 'Eaa\u00B4s Essential Aminos (360 Gr) Star', sabores: [], precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_eaas_essential_aminos_star.jpeg' },
+  { id: 15, marca: 'STAR NUTRITION', producto: 'Omega 3 Star (60 Comp)', sabores: [], precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_omega_3_star.jpeg' },
+  { id: 16, marca: 'ONE FIT', producto: 'Omega 3 One Fit (30 Comp)', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' },
+  { id: 17, marca: 'STAR NUTRITION', producto: 'Pre Entreno Star V8', sabores: ['Sandia', 'Acai'], precioPush: 34000, precioPublico: 40000, image: '/productos_push_sports/img_pre_entreno_3d_ripped.jpeg' },
+  { id: 18, marca: '-', producto: 'Pre Entreno 3d Limon', sabores: ['Limon'], precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_pump_v8.jpeg' },
+  { id: 19, marca: '-', producto: 'Pre Entreno Tnt', sabores: ['Acai', 'Blue Razz'], precioPush: 23000, precioPublico: 28000, image: '/productos_push_sports/img_pre_entreno_tnt.jpeg' },
+  { id: 20, marca: 'ONE FIT', producto: 'Pre Entreno One Fit', sabores: ['Limon', 'Uva'], precioPush: 17000, precioPublico: 20000, image: '/productos_push_sports/img_pre_entreno_pump_v8.jpeg' },
+  { id: 21, marca: '-', producto: 'Shaker Gris', sabores: [], precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_shaker_gris.jpeg' },
+  { id: 22, marca: '-', producto: 'Shaker Celeste', sabores: [], precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_shaker_gris.jpeg' },
+  { id: 23, marca: 'GRANGER FOODS', producto: 'Panqueques Granger', sabores: ['Chocolate', 'Vainilla'], precioPush: 10000, precioPublico: 15000, image: '/productos_push_sports/img_cupcake_chocolate.jpeg' },
+  { id: 24, marca: 'GRANGER FOODS', producto: 'Galleta Granger', sabores: [], precioPush: 9000, precioPublico: 12000, image: '/productos_push_sports/img_cookies_granger.jpeg' },
+  { id: 25, marca: '-', producto: 'Panqueques Queso', sabores: ['Queso'], precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_salado_queso.jpeg' },
+  { id: 26, marca: '-', producto: 'Panqueques Mole Vainilla', sabores: ['Vainilla'], precioPush: 12000, precioPublico: 14000, image: '/productos_push_sports/img_pancake_vainilla.jpeg' },
+  { id: 27, marca: '-', producto: 'Panqueque Keto', sabores: [], precioPush: 0, precioPublico: 0, image: '' },
+  { id: 28, marca: '-', producto: 'Cupcke Microondas', sabores: [], precioPush: 0, precioPublico: 0, image: '' },
+  { id: 29, marca: 'STAR NUTRITION', producto: 'Colageno Star', sabores: ['Limon', 'Frutos Rojos'], precioPush: 21000, precioPublico: 26000, image: '/productos_push_sports/img_collagen_whey_chocolate.jpeg' },
+  { id: 30, marca: 'ONE FIT', producto: 'Colageno One Fit 240 Gr', sabores: ['Naranja', 'Frutilla'], precioPush: 14000, precioPublico: 18000, image: '/productos_push_sports/img_collagen_sport_naranja.jpeg' },
+  { id: 31, marca: 'STAR NUTRITION', producto: 'Citrato De Magnesio Star', sabores: ['Neutro', 'Frutos Rojos'], precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_citrato_magnesio_star.jpeg' },
+  { id: 32, marca: 'STAR NUTRITION', producto: 'Citrato De Magnesio Star Comp 60u', sabores: [], precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_citrato_magnesio_star.jpeg' },
+  { id: 33, marca: 'ONE FIT', producto: 'Citrato De Magnesio One Fit Sin Sabor', sabores: [], precioPush: 12000, precioPublico: 17000, image: '/productos_push_sports/img_citrato_magnesio_onefit.jpeg' },
+  { id: 34, marca: '-', producto: 'Hydro Max', sabores: ['Naranja', 'Pomelo'], precioPush: 14000, precioPublico: 18000, image: '/productos_push_sports/img_collagen_sport_naranja.jpeg' },
+  { id: 35, marca: 'STAR NUTRITION', producto: 'Vitamina C Star', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
+  { id: 36, marca: 'STAR NUTRITION', producto: 'Multivitaminico Star', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
+  { id: 37, marca: '-', producto: 'Reverastrol', sabores: [], precioPush: 0, precioPublico: 0, image: '' },
+  { id: 38, marca: '-', producto: 'Barras Cereales', sabores: [], precioPush: 0, precioPublico: 0, image: '' },
+  { id: 39, marca: 'INTEGRA', producto: 'Caja Integra', sabores: ['Mani Y Chocolate', 'Arandanos', 'Chocolate Y Mani', 'Girasol Y Arandanos'], precioPush: 20000, precioPublico: 0, image: '/productos_push_sports/img_integra_barritas_caja.jpeg' },
 ];
 
 export default function App() {
@@ -286,12 +279,14 @@ export default function App() {
                       {item.product.image ? (
                         <img src={item.product.image} className="max-w-[100px] md:max-w-[140px] h-auto rounded-lg object-contain" alt="prod" />
                       ) : (
-                        <div className="w-[100px] md:w-[140px] h-24 md:h-32 bg-gray-100 rounded-lg"></div>
+                        <div className="w-[100px] md:w-[140px] h-24 md:h-32 bg-gray-100 rounded-lg flex items-center justify-center">
+                          <span className="font-oswald text-4xl md:text-6xl text-gray-400 font-bold uppercase">{item.product.producto.charAt(0)}</span>
+                        </div>
                       )}
                     </td>
                     <td className="py-2 pr-2">
                        <p className="text-[10px] md:text-[12px] font-bold text-black uppercase leading-tight line-clamp-2">{item.product.producto}</p>
-                       <p className="text-[8px] md:text-[9px] text-gray-400 mt-0.5 md:mt-1 uppercase tracking-tighter truncate">{item.product.marca} {item.product.sabor !== '-' && `• ${item.product.sabor}`}</p>
+                       <p className="text-[8px] md:text-[9px] text-gray-400 mt-0.5 md:mt-1 uppercase tracking-tighter truncate">{item.product.marca} {item.product.sabores && item.product.sabores.length > 0 && `• ${item.product.sabores.join(', ')}`}</p>
                     </td>
                     <td className="py-2 text-center">
                        <div className="flex flex-col gap-0.5 items-center justify-center">
@@ -386,11 +381,11 @@ export default function App() {
                     {prod.image ? (
                         <img src={prod.image} alt={prod.producto} className="w-16 h-16 rounded-xl object-cover shrink-0" />
                     ) : (
-                        <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 text-xs font-oswald shrink-0 border border-white/10">IMG</div>
+                        <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 font-oswald shrink-0 border border-white/10 text-2xl font-bold uppercase">{prod.producto.charAt(0)}</div>
                     )}
                     <div className="min-w-0">
                       <p className="font-bold text-sm md:text-base leading-tight text-white line-clamp-2">{prod.producto}</p>
-                      <p className="text-[10px] md:text-xs text-[#00A3CC] tracking-widest uppercase mt-1 truncate">{prod.marca} {prod.sabor !== '-' && `• ${prod.sabor}`}</p>
+                      <p className="text-[10px] md:text-xs text-[#00A3CC] tracking-widest uppercase mt-1 truncate">{prod.marca} {prod.sabores && prod.sabores.length > 0 && `• ${prod.sabores.join(', ')}`}</p>
                     </div>
                   </div>
                   <button onClick={() => handleAddShopItem(prod)} className="p-3 bg-[#00A3CC]/20 hover:bg-[#00A3CC]/50 text-[#00E5FF] hover:text-white rounded-xl transition-all shrink-0">
@@ -445,7 +440,7 @@ export default function App() {
                             )}
                             <div className="flex-1 min-w-0">
                                <p className="font-bold text-white leading-tight text-base md:text-xl line-clamp-2">{item.product.producto}</p>
-                               <p className="text-xs md:text-sm text-[#00A3CC] tracking-widest uppercase mt-1 md:mt-2 truncate">{item.product.marca} {item.product.sabor !== '-' && `• ${item.product.sabor}`}</p>
+                               <p className="text-xs md:text-sm text-[#00A3CC] tracking-widest uppercase mt-1 md:mt-2 truncate">{item.product.marca} {item.product.sabores && item.product.sabores.length > 0 && `• ${item.product.sabores.join(', ')}`}</p>
                             </div>
                          </div>
                          
@@ -503,14 +498,27 @@ export default function App() {
           </button>
           
           <PDFDownloadLink 
-            document={<ReportPDF products={products} currentDate={currentDate} totalProducts={totalProducts} />} 
+            document={<ReportPDF products={products} currentDate={currentDate} totalProducts={totalProducts} showPushPrice={true} />} 
             fileName={`PushSport_Reporte_${currentDate.replace(/\//g, '-')}.pdf`}
             className="bg-[#00A3CC] hover:bg-[#00E5FF] text-[#0F0F0F] px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 shadow-2xl transition-all font-bold cursor-pointer hover:scale-105 active:scale-95"
           >
             {({ blob, url, loading, error }) => (
               <>
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                {loading ? 'Preparando archivo...' : 'Descargar PDF'}
+                {loading ? 'Preparando...' : 'PDF Completo'}
+              </>
+            )}
+          </PDFDownloadLink>
+
+          <PDFDownloadLink 
+            document={<ReportPDF products={products} currentDate={currentDate} totalProducts={totalProducts} showPushPrice={false} />} 
+            fileName={`PushSport_Publico_${currentDate.replace(/\//g, '-')}.pdf`}
+            className="bg-white/80 hover:bg-white text-[#0F0F0F] px-8 py-3 rounded-full font-oswald uppercase tracking-widest text-xs flex items-center gap-2 shadow-2xl transition-all font-bold cursor-pointer hover:scale-105 active:scale-95 border border-black/10"
+          >
+            {({ blob, url, loading, error }) => (
+              <>
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                {loading ? 'Preparando...' : 'PDF Solo Público'}
               </>
             )}
           </PDFDownloadLink>
@@ -563,7 +571,7 @@ export default function App() {
                     <td className="py-4 md:py-5 text-xs md:text-sm font-semibold text-[#9CA3AF] uppercase tracking-tight">{product.marca}</td>
                     <td className="py-4 md:py-5">
                       <div className="font-bold text-base md:text-lg text-[#000000] leading-tight">{product.producto}</div>
-                      {product.sabor !== '-' && <div className="text-[10px] text-[#9CA3AF] mt-0.5 uppercase tracking-widest">{product.sabor}</div>}
+                      {product.sabores && product.sabores.length > 0 && <div className="text-[10px] text-[#9CA3AF] mt-0.5 uppercase tracking-widest">{product.sabores.join(', ')}</div>}
                     </td>
                     <td className="py-4 md:py-5 text-right font-oswald font-bold text-lg md:text-xl text-[#007A99] tracking-tighter">
                       {formatPrice(product.precioPush)}
@@ -695,7 +703,7 @@ export default function App() {
                   <tr key={product.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="px-6 py-4 text-sm text-gray-300 font-medium">{product.marca}</td>
                     <td className="px-6 py-4 text-sm text-white font-bold">{product.producto}</td>
-                    <td className="px-6 py-4 text-sm text-gray-400">{product.sabor}</td>
+                    <td className="px-6 py-4 text-sm text-gray-400">{product.sabores && product.sabores.length > 0 ? product.sabores.join(', ') : '-'}</td>
                     <td className="px-6 py-4 text-sm text-right font-oswald font-bold text-[#00A3CC] tracking-tight text-lg">
                       {formatPrice(product.precioPush)}
                     </td>
@@ -744,7 +752,7 @@ export default function App() {
               <div>
                 <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-1">Producto Seleccionado</p>
                 <p className="text-lg font-bold text-white leading-tight">{editingProduct.producto}</p>
-                <p className="text-sm text-[#00A3CC]">{editingProduct.marca} {editingProduct.sabor !== '-' && `• ${editingProduct.sabor}`}</p>
+                <p className="text-sm text-[#00A3CC]">{editingProduct.marca} {editingProduct.sabores && editingProduct.sabores.length > 0 && `• ${editingProduct.sabores.join(', ')}`}</p>
               </div>
 
               <div className="space-y-4">

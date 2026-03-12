@@ -26,18 +26,16 @@ const styles = StyleSheet.create({
   metricCard: { flex: 1, backgroundColor: '#F9FAFB', borderLeftWidth: 5, borderLeftColor: '#00A3CC', padding: 24, borderRadius: 16 },
   metricLabel: { fontSize: 8, color: '#6B7280', textTransform: 'uppercase', marginBottom: 8, fontWeight: 'bold', letterSpacing: 1.5 },
   metricValue: { fontSize: 36, fontFamily: 'Helvetica-Bold', fontWeight: 'bold', color: '#000000' },
-  colImg: { width: '55%', justifyContent: 'center', alignItems: 'center', paddingRight: 10 },
-  colCategoria: { width: '12%' },
-  colProducto: { width: '23%' },
-  colPrecioPublico: { width: '10%', textAlign: 'right' },
   tableHeader: { flexDirection: 'row', borderBottomWidth: 3, borderBottomColor: '#000000', paddingBottom: 4, marginBottom: 4, alignItems: 'center' },
   headerText: { fontSize: 8, color: '#4B5563', textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: 1 },
   tableRow: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#F3F4F6', paddingVertical: 4, alignItems: 'center' },
   productImage: { width: 140, height: 140, borderRadius: 8, objectFit: 'contain' },
-  imagePlaceholder: { width: 140, height: 140, borderRadius: 8, backgroundColor: '#E5E7EB' },
+  imagePlaceholder: { width: 140, height: 140, borderRadius: 8, backgroundColor: '#E5E7EB', display: 'flex', justifyContent: 'center', alignItems: 'center' },
+  placeholderText: { fontSize: 56, fontFamily: 'Helvetica-Bold', color: '#9CA3AF', textTransform: 'uppercase' },
   rowTextMarca: { fontSize: 7, color: '#9CA3AF', textTransform: 'uppercase', fontWeight: 'bold' },
   rowTextProducto: { fontSize: 9, fontFamily: 'Helvetica-Bold', fontWeight: 'bold', color: '#000000' },
   rowTextSabor: { fontSize: 6, color: '#9CA3AF', textTransform: 'uppercase', marginTop: 4, letterSpacing: 0.5 },
+  rowTextPrecioPush: { fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#007A99', fontWeight: 'bold' },
   rowTextPrecioPublico: { fontSize: 11, fontFamily: 'Helvetica-Bold', color: '#000000', fontWeight: 'bold' },
   footer: { marginTop: 'auto', paddingTop: 15, borderTopWidth: 1, borderTopColor: '#F3F4F6', textAlign: 'center' },
   footerText: { fontSize: 8, color: '#D1D5DB', fontWeight: 'medium', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 6 },
@@ -46,11 +44,18 @@ const styles = StyleSheet.create({
   dotDecor: { position: 'absolute', bottom: 50, left: 50, width: 12, height: 12, borderRadius: 6, backgroundColor: '#00A3CC' }
 });
 
-const ReportPDF = ({ products, currentDate }) => {
+const ReportPDF = ({ products, currentDate, showPushPrice = true }) => {
   const totalProducts = products.length;
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(price);
   };
+
+  // Dynamic column widths based on whether Push price is shown
+  const colImg = { width: showPushPrice ? '50%' : '55%', justifyContent: 'center', alignItems: 'center', paddingRight: 10 };
+  const colCategoria = { width: showPushPrice ? '12%' : '12%' };
+  const colProducto = { width: showPushPrice ? '18%' : '23%' };
+  const colPrecioPush = { width: '10%', textAlign: 'right' };
+  const colPrecioPublico = { width: '10%', textAlign: 'right' };
 
   return (
     <Document title={`Reporte PushSport - ${currentDate}`}>
@@ -62,7 +67,7 @@ const ReportPDF = ({ products, currentDate }) => {
           <View style={styles.header}>
             <View style={styles.logoContainer}>
               <Text style={styles.logoMain}>PUSH<Text style={styles.logoSport}>SPORT</Text></Text>
-              <Text style={styles.logoSub}>INTELLIGENCE & PERFORMANCE REPORT</Text>
+              <Text style={styles.logoSub}>{showPushPrice ? 'INTELLIGENCE & PERFORMANCE REPORT' : 'LISTADO DE PRECIOS MAYORISTAS'}</Text>
             </View>
             <View style={styles.dateContainer}>
               <Text style={styles.dateLabel}>Fecha Emisión</Text>
@@ -71,29 +76,37 @@ const ReportPDF = ({ products, currentDate }) => {
           </View>
 
           <View style={styles.tableHeader}>
-            <View style={styles.colImg}><Text style={styles.headerText}>Img</Text></View>
-            <View style={styles.colCategoria}><Text style={styles.headerText}>Categoría</Text></View>
-            <View style={styles.colProducto}><Text style={styles.headerText}>Producto y Detalle</Text></View>
-            <View style={styles.colPrecioPublico}><Text style={styles.headerText}>P. Público</Text></View>
+            <View style={colImg}><Text style={styles.headerText}>Img</Text></View>
+            <View style={colCategoria}><Text style={styles.headerText}>Categoría</Text></View>
+            <View style={colProducto}><Text style={styles.headerText}>Producto y Detalle</Text></View>
+            {showPushPrice && <View style={colPrecioPush}><Text style={styles.headerText}>P. Push</Text></View>}
+            <View style={colPrecioPublico}><Text style={styles.headerText}>P. Público</Text></View>
           </View>
 
           {products.map((prod) => (
             <View key={prod.id} style={styles.tableRow} wrap={false}>
-                <View style={styles.colImg}>
+                <View style={colImg}>
                   {prod.image ? (
                     <Image src={prod.image} style={styles.productImage} />
                   ) : (
-                    <View style={styles.imagePlaceholder} />
+                    <View style={styles.imagePlaceholder}>
+                      <Text style={styles.placeholderText}>{prod.producto.charAt(0)}</Text>
+                    </View>
                   )}
                 </View>
-                <View style={styles.colCategoria}>
+                <View style={colCategoria}>
                   <Text style={styles.rowTextMarca}>{prod.marca}</Text>
-                  {prod.sabor !== '-' && <Text style={styles.rowTextSabor}>Sabor: {prod.sabor}</Text>}
+                  {prod.sabores && prod.sabores.length > 0 && <Text style={styles.rowTextSabor}>Sabores: {prod.sabores.join(', ')}</Text>}
                 </View>
-                <View style={styles.colProducto}>
+                <View style={colProducto}>
                   <Text style={styles.rowTextProducto}>{prod.producto}</Text>
                 </View>
-                <View style={styles.colPrecioPublico}>
+                {showPushPrice && (
+                  <View style={colPrecioPush}>
+                    <Text style={styles.rowTextPrecioPush}>{prod.precioPush > 0 ? formatPrice(prod.precioPush) : '-'}</Text>
+                  </View>
+                )}
+                <View style={colPrecioPublico}>
                   <Text style={styles.rowTextPrecioPublico}>{prod.precioPublico > 0 ? formatPrice(prod.precioPublico) : '-'}</Text>
                 </View>
               </View>

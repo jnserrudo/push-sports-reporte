@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
   colPrecio: { width: '10%', textAlign: 'left' },
   tableRow: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#F3F4F6', paddingVertical: 4, alignItems: 'center' },
   productImage: { width: 150, height: 150, borderRadius: 8, objectFit: 'contain' },
-  imagePlaceholder: { width: 150, height: 150, borderRadius: 8, backgroundColor: '#E5E7EB' },
+  imagePlaceholder: { width: 150, height: 150, borderRadius: 8, backgroundColor: '#E5E7EB', display: 'flex', justifyContent: 'center', alignItems: 'center' },
+  placeholderText: { fontSize: 60, fontFamily: 'Helvetica-Bold', color: '#9CA3AF', textTransform: 'uppercase' },
   rowTextProducto: { fontSize: 9, fontFamily: 'Helvetica-Bold', fontWeight: 'bold', color: '#000000' },
   rowTextMarca: { fontSize: 7, color: '#9CA3AF', textTransform: 'uppercase', marginTop: 2 },
   rowTextStockGroup: { fontSize: 6.5, color: '#4B5563', textTransform: 'uppercase', marginBottom: 1 },
@@ -89,12 +90,14 @@ const ShopReportPDF = ({ shopName, items, currentDate }) => {
                   {prod.image ? (
                     <Image src={prod.image} style={styles.productImage} />
                   ) : (
-                    <View style={styles.imagePlaceholder} />
+                    <View style={styles.imagePlaceholder}>
+                      <Text style={styles.placeholderText}>{prod.producto.charAt(0)}</Text>
+                    </View>
                   )}
                 </View>
                 <View style={styles.colProducto}>
                   <Text style={styles.rowTextProducto}>{prod.producto}</Text>
-                  <Text style={styles.rowTextMarca}>{prod.marca} {prod.sabor !== '-' ? `• ${prod.sabor}` : ''}</Text>
+                  <Text style={styles.rowTextMarca}>{prod.marca} {prod.sabores && prod.sabores.length > 0 ? `• ${prod.sabores.join(', ')}` : ''}</Text>
                 </View>
                 {/* Movimientos Agrupados */}
                 <View style={styles.colDetalle}>
