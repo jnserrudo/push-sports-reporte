@@ -266,36 +266,36 @@ export default function App() {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b-2 md:border-b-4 border-black">
-                  <th className="py-1.5 md:py-2 text-center font-oswald uppercase text-[8px] md:text-[10px] tracking-widest text-[#4B5563] w-[40%] md:w-[50%]">Img</th>
-                  <th className="py-1.5 md:py-2 text-left font-oswald uppercase text-[8px] md:text-[10px] tracking-widest text-[#4B5563] w-[35%] md:w-[28%]">Producto</th>
-                  <th className="py-1.5 md:py-2 text-center font-oswald uppercase text-[8px] md:text-[10px] tracking-widest text-[#4B5563] w-[13%] md:w-[12%]">Detalle</th>
-                  <th className="py-1.5 md:py-2 text-right font-oswald uppercase text-[8px] md:text-[10px] tracking-widest text-[#4B5563] w-[12%] md:w-[10%]">Público</th>
+                  <th className="py-2.5 md:py-4 text-center font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[45%] md:w-[50%]">Imagen</th>
+                  <th className="py-2.5 md:py-4 text-left font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[30%] md:w-[28%] pl-2">Producto</th>
+                  <th className="py-2.5 md:py-4 text-center font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[13%] md:w-[12%]">Stock</th>
+                  <th className="py-2.5 md:py-4 text-right font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[12%] md:w-[10%]">P. Público</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-200">
                 {shopItems.map((item, idx) => (
-                  <tr key={idx} className="border-b border-gray-100">
-                    <td className="py-1 flex justify-center items-center h-28 md:h-40">
+                  <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+                    <td className="py-3 px-2 flex justify-center items-center h-40 md:h-52">
                       {item.product.image ? (
-                        <img src={item.product.image} className="max-w-[100px] md:max-w-[140px] h-auto rounded-lg object-contain" alt="prod" />
+                        <img src={item.product.image} className="max-w-[120px] md:max-w-[160px] max-h-[140px] md:max-h-[180px] w-auto h-auto rounded-xl object-contain shadow-sm border border-gray-100" alt="prod" />
                       ) : (
-                        <div className="w-[100px] md:w-[140px] h-24 md:h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                          <span className="font-oswald text-4xl md:text-6xl text-gray-400 font-bold uppercase">{item.product.producto.charAt(0)}</span>
+                        <div className="w-[120px] md:w-[160px] h-32 md:h-40 bg-gray-100 rounded-xl flex items-center justify-center border border-gray-200">
+                          <span className="font-oswald text-4xl md:text-6xl text-gray-300 font-bold uppercase">{item.product.producto.charAt(0)}</span>
                         </div>
                       )}
                     </td>
-                    <td className="py-2 pr-2">
-                       <p className="text-[10px] md:text-[12px] font-bold text-black uppercase leading-tight line-clamp-2">{item.product.producto}</p>
-                       <p className="text-[8px] md:text-[9px] text-gray-400 mt-0.5 md:mt-1 uppercase tracking-tighter truncate">{item.product.marca} {item.product.sabores && item.product.sabores.length > 0 && `• ${item.product.sabores.join(', ')}`}</p>
+                    <td className="py-4 pl-2 pr-4">
+                       <p className="text-[11px] md:text-lg font-bold text-black uppercase leading-tight">{item.product.producto}</p>
+                       <p className="text-[9px] md:text-[11px] text-[#374151] mt-1.5 md:mt-2 uppercase tracking-tight font-bold">{item.product.marca} {item.product.sabores && item.product.sabores.length > 0 && <span className="text-gray-400 font-medium ml-1">• {item.product.sabores.join(', ')}</span>}</p>
                     </td>
-                    <td className="py-2 text-center">
-                       <div className="flex flex-col gap-0.5 items-center justify-center">
-                          <p className="text-[8px] md:text-[10px] text-[#00A3CC] font-bold uppercase tracking-tighter">Ant: {item.stockAnterior || 0}</p>
-                          <p className="text-[8px] md:text-[10px] text-[#00A3CC] font-bold uppercase tracking-tighter">Dej: {item.cantidadDejada || 0}</p>
-                          <p className="text-[9px] md:text-[12px] text-black font-black uppercase tracking-tighter mt-0.5 md:mt-1 border-t border-gray-100 pt-0.5 md:pt-1 min-w-[50px] md:w-20">Total: {(item.stockAnterior || 0) + (item.cantidadDejada || 0)}</p>
+                    <td className="py-4 text-center">
+                       <div className="flex flex-col gap-1 items-center justify-center">
+                          <p className="text-[9px] md:text-[11px] text-[#4B5563] font-bold uppercase tracking-tighter">Ant: <span className="text-[#007A99]">{item.stockAnterior || 0}</span></p>
+                          <p className="text-[9px] md:text-[11px] text-[#4B5563] font-bold uppercase tracking-tighter">Dej: <span className="text-[#007A99]">{item.cantidadDejada || 0}</span></p>
+                          <p className="text-[10px] md:text-sm text-black font-black uppercase tracking-tighter mt-1 border-t-2 border-gray-100 pt-1 min-w-[60px] md:w-24">Total: {(item.stockAnterior || 0) + (item.cantidadDejada || 0)}</p>
                        </div>
                     </td>
-                    <td className="py-1 text-right font-bold text-[10px] md:text-sm whitespace-nowrap">
+                    <td className="py-4 text-right font-black text-xs md:text-lg text-black whitespace-nowrap">
                        {item.precioPublico > 0 ? formatPrice(item.precioPublico) : '-'}
                     </td>
                   </tr>
@@ -370,11 +370,11 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Panel Izquierdo: Selección de Productos */}
-          <div className="lg:col-span-1 glass-panel rounded-[32px] overflow-hidden flex flex-col h-[75vh]">
-            <div className="p-6 border-b border-white/5 bg-black/20">
-              <h2 className="font-oswald text-xl font-bold uppercase tracking-tighter">Añadir al Listado</h2>
+          <div className="lg:col-span-1 glass-panel rounded-[32px] overflow-hidden flex flex-col h-auto lg:h-[75vh]">
+            <div className="p-4 md:p-6 border-b border-white/5 bg-black/20">
+              <h2 className="font-oswald text-lg md:text-xl font-bold uppercase tracking-tighter">Añadir al Listado</h2>
             </div>
-            <div className="p-4 overflow-y-auto flex-1 space-y-3 custom-scrollbar">
+            <div className="p-3 md:p-4 overflow-y-auto flex-1 space-y-3 custom-scrollbar max-h-[400px] lg:max-h-none">
               {products.map(prod => (
                 <div key={prod.id} className="bg-black/40 border border-white/5 rounded-2xl p-4 flex justify-between items-center hover:border-white/20 transition-all gap-4">
                   <div className="flex items-center gap-4 flex-1">
@@ -411,70 +411,68 @@ export default function App() {
                />
             </div>
 
-            <div className="glass-panel rounded-[32px] overflow-hidden flex flex-col h-[calc(75vh-120px)] p-4 md:p-6">
-               <div className="p-6 border-b border-white/5 bg-black/20 flex justify-between items-center shrink-0">
-                 <h2 className="font-oswald text-xl font-bold uppercase tracking-tighter">Artículos Añadidos</h2>
-                 <span className="text-xs bg-white/10 px-3 py-1 rounded-full font-bold">{shopItems.length} items</span>
+            <div className="glass-panel rounded-[32px] overflow-hidden flex flex-col h-auto lg:h-[calc(75vh-120px)] p-3 md:p-6">
+               <div className="p-4 md:p-6 border-b border-white/5 bg-black/20 flex justify-between items-center shrink-0">
+                 <h2 className="font-oswald text-lg md:text-xl font-bold uppercase tracking-tighter">Artículos Añadidos</h2>
+                 <span className="text-[10px] md:text-xs bg-white/10 px-2 md:px-3 py-1 rounded-full font-bold">{shopItems.length} items</span>
                </div>
                
-               <div className="p-4 md:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1">
+               <div className="p-3 md:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 max-h-[500px] lg:max-h-none">
                  {shopItems.length === 0 ? (
-                    <div className="text-center py-10 opacity-50 flex flex-col items-center justify-center h-full">
-                       <ListPlus className="w-16 h-16 mx-auto mb-4 text-[#00A3CC]" />
-                       <p className="font-oswald text-xl uppercase tracking-widest text-[#00A3CC]">Lista Vacía</p>
-                       <p className="text-sm text-gray-400 mt-2 max-w-xs mx-auto">Agregue productos desde el panel izquierdo para confeccionar el reporte del comercio.</p>
+                    <div className="text-center py-12 md:py-20 opacity-50 flex flex-col items-center justify-center">
+                       <ListPlus className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-[#00A3CC]" />
+                       <p className="font-oswald text-lg md:text-xl uppercase tracking-widest text-[#00A3CC]">Lista Vacía</p>
+                       <p className="text-[11px] md:text-sm text-gray-400 mt-2 max-w-[250px] md:max-w-xs mx-auto">Agregue productos desde el panel izquierdo para confeccionar el reporte del comercio.</p>
                        {!hasValidName && (
-                          <p className="text-xs text-red-400 uppercase tracking-widest mt-4 font-bold border border-red-500/20 bg-red-500/10 px-4 py-2 rounded-full">
+                          <p className="text-[9px] md:text-xs text-red-400 uppercase tracking-widest mt-4 font-bold border border-red-500/20 bg-red-500/10 px-3 md:px-4 py-2 rounded-full">
                             Ingrese nombre de comercio
                           </p>
                        )}
                     </div>
                  ) : (
                     shopItems.map((item, index) => (
-                      <div key={index} className="bg-black/40 border border-white/5 rounded-3xl p-6 flex flex-col 2xl:flex-row items-start 2xl:items-center justify-between gap-6 hover:border-white/20 transition-all">
-                         <div className="flex items-center gap-5 flex-1 w-full">
+                      <div key={index} className="bg-black/40 border border-white/5 rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col items-start gap-4 md:gap-6 hover:border-white/20 transition-all">
+                         <div className="flex items-start md:items-center gap-4 md:gap-5 w-full">
                             {item.product.image ? (
-                                <img src={item.product.image} alt="prod" className="w-16 h-16 md:w-20 md:h-20 rounded-2xl object-cover shrink-0 border border-white/10" />
+                                <img src={item.product.image} alt="prod" className="w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl object-cover shrink-0 border border-white/10" />
                             ) : (
-                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 text-sm shrink-0 font-oswald border border-white/10">IMG</div>
+                                <div className="w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 text-[10px] md:text-sm shrink-0 font-oswald border border-white/10 text-center px-1">NO IMG</div>
                             )}
                             <div className="flex-1 min-w-0">
-                               <p className="font-bold text-white leading-tight text-base md:text-xl line-clamp-2">{item.product.producto}</p>
-                               <p className="text-xs md:text-sm text-[#00A3CC] tracking-widest uppercase mt-1 md:mt-2 truncate">{item.product.marca} {item.product.sabores && item.product.sabores.length > 0 && `• ${item.product.sabores.join(', ')}`}</p>
+                               <p className="font-bold text-white leading-tight text-sm md:text-xl line-clamp-2">{item.product.producto}</p>
+                               <p className="text-[9px] md:text-sm text-[#00A3CC] tracking-widest uppercase mt-1 md:mt-2 truncate">{item.product.marca} {item.product.sabores && item.product.sabores.length > 0 && `• ${item.product.sabores.join(', ')}`}</p>
                             </div>
+                            <button onClick={() => handleRemoveShopItem(index)} className="md:hidden p-2 bg-red-500/10 text-red-500 rounded-lg">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                          </div>
                          
-                         <div className="flex flex-col w-full 2xl:w-auto gap-4 mt-2 2xl:mt-0">
-                           {/* Fila de Stocks */}
-                           <div className="flex items-end gap-3 justify-end w-full">
-                              <div className="flex-1 max-w-[100px] shrink-0">
-                                <label className="block text-[10px] md:text-xs uppercase text-gray-500 mb-1 font-bold">Stock Ant.</label>
-                                <input type="number" min="0" value={item.stockAnterior === '' ? '' : item.stockAnterior} onChange={(e) => updateShopItem(index, 'stockAnterior', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-xl py-2 px-2 text-center focus:outline-none focus:border-[#00E5FF] text-white" />
+                         <div className="grid grid-cols-2 sm:flex sm:items-end gap-3 w-full">
+                            <div className="flex-1 min-w-0">
+                              <label className="block text-[8px] md:text-xs uppercase text-gray-500 mb-1 font-bold truncate">Stock Ant.</label>
+                              <input type="number" min="0" value={item.stockAnterior === '' ? '' : item.stockAnterior} onChange={(e) => updateShopItem(index, 'stockAnterior', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-lg md:rounded-xl py-2 px-2 text-center focus:outline-none focus:border-[#00E5FF] text-white text-xs md:text-base" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <label className="block text-[8px] md:text-xs uppercase text-[#00E5FF] mb-1 font-bold truncate">Dejado</label>
+                              <input type="number" min="0" value={item.cantidadDejada === '' ? '' : item.cantidadDejada} onChange={(e) => updateShopItem(index, 'cantidadDejada', e.target.value)} placeholder="0" className="w-full bg-[#00A3CC]/20 border border-[#00A3CC]/50 rounded-lg md:rounded-xl py-2 px-2 text-center focus:outline-none focus:border-[#00E5FF] focus:bg-[#00A3CC]/30 text-white font-bold transition-all text-xs md:text-base" />
+                            </div>
+                            <div className="hidden sm:block w-16 md:w-24 shrink-0">
+                              <label className="block text-[8px] md:text-xs uppercase text-gray-500 mb-1 font-bold text-center truncate">Total</label>
+                              <div className="w-full bg-white/5 border border-white/5 rounded-lg md:rounded-xl py-2 px-2 text-center text-white font-bold text-xs md:text-base">{(item.stockAnterior || 0) + (item.cantidadDejada || 0)}</div>
+                            </div>
+                            <div className="col-span-2 sm:flex-1 sm:max-w-[200px] relative">
+                              <label className="block text-[8px] md:text-xs uppercase text-gray-500 mb-1 font-bold truncate">P. Público Sug. ($)</label>
+                              <div className="relative">
+                                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-[10px] md:text-xs">$</span>
+                                <input type="number" min="0" value={item.precioPublico === '' ? '' : item.precioPublico} onChange={(e) => updateShopItem(index, 'precioPublico', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-lg md:rounded-xl py-2 pl-5 pr-2 text-left focus:outline-none focus:border-[#00E5FF] text-white text-xs md:text-base" />
                               </div>
-                              <div className="flex-1 max-w-[100px] shrink-0">
-                                <label className="block text-[10px] md:text-xs uppercase text-[#00E5FF] mb-1 font-bold">Dejado</label>
-                                <input type="number" min="0" value={item.cantidadDejada === '' ? '' : item.cantidadDejada} onChange={(e) => updateShopItem(index, 'cantidadDejada', e.target.value)} placeholder="0" className="w-full bg-[#00A3CC]/20 border border-[#00A3CC]/50 rounded-xl py-2 px-2 text-center focus:outline-none focus:border-[#00E5FF] focus:bg-[#00A3CC]/30 text-white font-bold transition-all" />
-                              </div>
-                              <div className="w-16 md:w-24 shrink-0">
-                                <label className="block text-[10px] md:text-xs uppercase text-gray-500 mb-1 font-bold text-center">Total</label>
-                                <div className="w-full bg-white/5 border border-white/5 rounded-xl py-2 px-2 text-center text-white font-bold text-sm md:text-base">{(item.stockAnterior || 0) + (item.cantidadDejada || 0)}</div>
-                              </div>
-                           </div>
-
-                           {/* Fila de Precios (Editables individualmente) */}
-                           <div className="flex items-end gap-3 justify-end w-full">
-                              <div className="flex-1 max-w-[150px] shrink-0 relative">
-                                <label className="block text-[10px] uppercase text-gray-500 mb-1 font-bold">P. Público Sug. ($)</label>
-                                <input type="number" min="0" value={item.precioPublico === '' ? '' : item.precioPublico} onChange={(e) => updateShopItem(index, 'precioPublico', e.target.value)} placeholder="0" className="w-full bg-black/50 border border-white/10 rounded-xl py-2 px-2 pl-6 text-left focus:outline-none focus:border-[#00E5FF] text-white text-sm" />
-                                <span className="absolute left-2.5 bottom-2.5 text-gray-500 text-xs">$</span>
-                              </div>
-                              <button onClick={() => handleRemoveShopItem(index)} className="p-2 sm:p-3 bg-red-500/10 hover:bg-red-500/30 text-red-500 hover:text-red-400 rounded-xl transition-all shrink-0">
-                                <Trash2 className="w-4 h-4 md:w-5 md:h-5" />
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                   ))
+                            </div>
+                            <button onClick={() => handleRemoveShopItem(index)} className="hidden md:block p-3 bg-red-500/10 hover:bg-red-500/30 text-red-500 hover:text-red-400 rounded-xl transition-all shrink-0">
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                         </div>
+                      </div>
+                    ))
                  )}
                </div>
             </div>
@@ -686,7 +684,39 @@ export default function App() {
               Catálogo <span className="text-[#00A3CC]">Activo</span>
             </h2>
           </div>
-          <div className="overflow-x-auto">
+          <div className="md:hidden divide-y divide-white/5">
+            {products.map((product) => (
+              <div key={`mobile-${product.id}`} className="p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="min-w-0">
+                    <p className="text-[10px] text-[#00A3CC] uppercase tracking-widest font-bold">{product.marca}</p>
+                    <h3 className="text-white font-bold text-lg leading-tight mt-1">{product.producto}</h3>
+                    {product.sabores && product.sabores.length > 0 && (
+                      <p className="text-xs text-gray-400 mt-1">{product.sabores.join(', ')}</p>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => handleEditClick(product)}
+                    className="p-3 rounded-xl bg-white/5 text-gray-400 active:bg-[#00A3CC]/20 active:text-[#00E5FF] transition-all"
+                  >
+                    <Edit2 className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="flex gap-4 pt-2">
+                  <div className="flex-1 bg-black/40 rounded-2xl p-3 border border-white/5 text-center">
+                    <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1">PushSport</p>
+                    <p className="font-oswald font-bold text-[#00A3CC] text-xl">{formatPrice(product.precioPush)}</p>
+                  </div>
+                  <div className="flex-1 bg-black/40 rounded-2xl p-3 border border-white/5 text-center">
+                    <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Sugerido</p>
+                    <p className="font-oswald font-bold text-white text-xl">{formatPrice(product.precioPublico)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-black/40 text-xs font-oswald tracking-widest text-[#00E5FF] uppercase border-b border-white/10">
