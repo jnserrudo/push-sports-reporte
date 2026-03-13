@@ -43,17 +43,17 @@ import ShopReportPDF from './ShopReportPDF';
 
 // --- DATOS INICIALES (ESTÁTICOS) ---
 const INITIAL_PRODUCTS = [
-  { id: 1, marca: 'STAR NUTRITION', producto: 'Creatina 300 Grs Star', sabores: ['Frutos Rojos'], precioPush: 25000, precioPublico: 30000, image: '/productos_push_sports/v1/Creatina_star_frasco.jpeg' },
+  { id: 1, marca: 'STAR NUTRITION', producto: 'Creatina 300 Grs Star', sabores: ['Frutos Rojos'], precioPush: 25000, precioPublico: 30000, image: '/productos_push_sports/v1/Creatina_star_sobre.jpeg' },
   { id: 2, marca: 'ONE FIT', producto: 'Creatina 200 Grs One Fit', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/v1/Creatina_One_Fit_200g.jpeg' },
-  { id: 3, marca: 'ONE FIT', producto: 'Creatina 500 Grs One Fit Pote', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' },
-  { id: 4, marca: 'STAR NUTRITION', producto: 'L-Carnitina Star Nutrition', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/v1/L-Carnitina_Star_Nutrition.jpeg' },
+  { id: 3, marca: 'ONE FIT', producto: 'Creatina 500 Grs One Fit Pote', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' }, 
+  { id: 4, marca: 'STAR NUTRITION', producto: 'L-Carnitina Star Nutrition', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/v1/L-Carnitina_Star_Nutrition.jpeg' }, 
   { id: 5, marca: 'STAR NUTRITION', producto: 'Proteina Star 1 Kg', sabores: ['Frutilla', 'Chocolate', 'Banana', 'Cookie', 'Vainilla'], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/v1/Proteina_Star_1kg.jpeg' },
   { id: 6, marca: 'STAR NUTRITION', producto: 'Proteina Star 1 Kg (Con Colageno)', sabores: ['Vainilla', 'Chocolate'], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/v1/Proteina_Star_1kg_colageno.jpeg' },
   { id: 7, marca: 'STAR NUTRITION', producto: 'Proteina Star Organica', sabores: [], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/v1/Proteina-Star-Organica.jpeg' },
   { id: 8, marca: 'ONE FIT', producto: 'Proteina One Fit', sabores: ['Vainilla', 'Frutilla', 'Chocolate'], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/v1/Proteina_Onefit.jpeg' },
-  { id: 9, marca: 'ONE FIT', producto: 'Fat Distroyer 2.0 One Fit (90 Caps)', sabores: [], precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/v1/Bcca_star_270.jpeg' },
-  { id: 10, marca: 'STAR NUTRITION', producto: 'Bcca Star Limon 270grs (en Polvo)', sabores: ['Limon'], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
-  { id: 11, marca: 'STAR NUTRITION', producto: 'Bcca Star Frutos Rojos 300grs (en Polvo)', sabores: ['Frutos Rojos'], precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
+  { id: 9, marca: 'ONE FIT', producto: 'Fat Distroyer 2.0 One Fit (90 Caps)', sabores: [], precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/v1/img_quemador_fat_destroyer_one_fit.jpeg' },
+  { id: 10, marca: 'STAR NUTRITION', producto: 'Bcca Star Limon 270grs (en Polvo)', sabores: ['Limon','Frutos Rojos'], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/v1/Bcca_Star_270.jpeg' },
+  //{ id: 11, marca: 'STAR NUTRITION', producto: 'Bcca Star Frutos Rojos 300grs (en Polvo)', sabores: ['Frutos Rojos'], precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
   { id: 12, marca: 'STAR NUTRITION', producto: 'Bcca Star En Capsulas', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
   { id: 13, marca: 'ONE FIT', producto: 'Bcca One Fit 300grs', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/v1/Bcca_One_Fit_300g.jpeg' },
   { id: 14, marca: 'STAR NUTRITION', producto: 'Eaa\u00B4s Essential Aminos (360 Gr) Star', sabores: [], precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_eaas_essential_aminos_star.jpeg' },
@@ -277,7 +277,10 @@ export default function App() {
                   <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
                     <td className="py-3 px-2 flex justify-center items-center h-40 md:h-52">
                       {item.product.image ? (
-                        <img src={item.product.image} className="max-w-[120px] md:max-w-[160px] max-h-[140px] md:max-h-[180px] w-auto h-auto rounded-xl object-contain shadow-sm border border-gray-100" alt="prod" />
+                        <div className="w-[120px] md:w-[160px] h-[120px] md:h-[160px] rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-white flex items-center justify-center">
+                          {/* MODIFICA EL VALOR scale-[1.10] ABAJO PARA AJUSTAR EL RECORTE DE LA IMAGEN */}
+                          <img src={item.product.image} className="w-full h-full object-cover scale-[1.10]" alt="prod" />
+                        </div>
                       ) : (
                         <div className="w-[120px] md:w-[160px] h-32 md:h-40 bg-gray-100 rounded-xl flex items-center justify-center border border-gray-200">
                           <span className="font-oswald text-4xl md:text-6xl text-gray-300 font-bold uppercase">{item.product.producto.charAt(0)}</span>
@@ -379,7 +382,10 @@ export default function App() {
                 <div key={prod.id} className="bg-black/40 border border-white/5 rounded-2xl p-4 flex justify-between items-center hover:border-white/20 transition-all gap-4">
                   <div className="flex items-center gap-4 flex-1">
                     {prod.image ? (
-                        <img src={prod.image} alt={prod.producto} className="w-16 h-16 rounded-xl object-cover shrink-0" />
+                        <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white border border-white/5 flex items-center justify-center">
+                          {/* MODIFICA EL VALOR scale-[1.10] ABAJO PARA AJUSTAR EL RECORTE DE LA IMAGEN */}
+                          <img src={prod.image} alt={prod.producto} className="w-full h-full object-cover scale-[1.10]" />
+                        </div>
                     ) : (
                         <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 font-oswald shrink-0 border border-white/10 text-2xl font-bold uppercase">{prod.producto.charAt(0)}</div>
                     )}
@@ -434,7 +440,10 @@ export default function App() {
                       <div key={index} className="bg-black/40 border border-white/5 rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col items-start gap-4 md:gap-6 hover:border-white/20 transition-all">
                          <div className="flex items-start md:items-center gap-4 md:gap-5 w-full">
                             {item.product.image ? (
-                                <img src={item.product.image} alt="prod" className="w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl object-cover shrink-0 border border-white/10" />
+                                <div className="w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl overflow-hidden shrink-0 bg-white border border-white/10 flex items-center justify-center">
+                                  {/* MODIFICA EL VALOR scale-[1.10] ABAJO PARA AJUSTAR EL RECORTE DE LA IMAGEN */}
+                                  <img src={item.product.image} alt="prod" className="w-full h-full object-cover scale-[1.10]" />
+                                </div>
                             ) : (
                                 <div className="w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 text-[10px] md:text-sm shrink-0 font-oswald border border-white/10 text-center px-1">NO IMG</div>
                             )}
@@ -554,27 +563,40 @@ export default function App() {
 
           {/* Tabla de Productos */}
           <div className="overflow-x-auto -mx-6 md:mx-0">
-            <table className="w-full border-collapse mb-10 min-w-[600px] md:min-w-full px-6 md:px-0">
+            <table className="w-full border-collapse mb-10 min-w-[700px] md:min-w-full px-6 md:px-0">
               <thead>
                 <tr className="border-b-2 border-[#000000]">
-                  <th className="py-4 text-left font-oswald uppercase text-[10px] md:text-xs tracking-widest text-[#4B5563]">Marca</th>
-                  <th className="py-4 text-left font-oswald uppercase text-[10px] md:text-xs tracking-widest text-[#4B5563]">Producto / Sabor</th>
-                  <th className="py-4 text-right font-oswald uppercase text-[10px] md:text-xs tracking-widest text-[#4B5563]">Precio PushSport</th>
-                  <th className="py-4 text-right font-oswald uppercase text-[10px] md:text-xs tracking-widest text-[#4B5563]">Sugerido</th>
+                  <th className="py-2.5 md:py-4 text-center font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[15%]">Imagen</th>
+                  <th className="py-2.5 md:py-4 text-left font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[15%]">Marca</th>
+                  <th className="py-2.5 md:py-4 text-left font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[30%]">Producto / Sabor</th>
+                  <th className="py-2.5 md:py-4 text-right font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[20%]">Precio PushSport</th>
+                  <th className="py-2.5 md:py-4 text-right font-oswald uppercase text-[9px] md:text-xs tracking-widest text-[#1F2937] w-[20%]">Sugerido</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F3F4F6]">
                 {products.map((product) => (
                   <tr key={`print-${product.id}`} className="hover:bg-[#F9FAFB] transition-colors">
-                    <td className="py-4 md:py-5 text-xs md:text-sm font-semibold text-[#9CA3AF] uppercase tracking-tight">{product.marca}</td>
-                    <td className="py-4 md:py-5">
-                      <div className="font-bold text-base md:text-lg text-[#000000] leading-tight">{product.producto}</div>
-                      {product.sabores && product.sabores.length > 0 && <div className="text-[10px] text-[#9CA3AF] mt-0.5 uppercase tracking-widest">{product.sabores.join(', ')}</div>}
+                    <td className="py-2 px-2 flex justify-center items-center h-24 md:h-32">
+                      {product.image ? (
+                        <div className="w-[80px] md:w-[100px] h-[80px] md:h-[100px] rounded-lg overflow-hidden shadow-sm border border-gray-100 bg-white flex items-center justify-center">
+                          {/* MODIFICA EL VALOR scale-[1.10] ABAJO PARA AJUSTAR EL RECORTE DE LA IMAGEN */}
+                          <img src={product.image} className="w-full h-full object-cover scale-[1.10]" alt="prod" />
+                        </div>
+                      ) : (
+                        <div className="w-[80px] md:w-[100px] h-20 md:h-24 bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
+                          <span className="font-oswald text-3xl md:text-4xl text-gray-300 font-bold uppercase">{product.producto.charAt(0)}</span>
+                        </div>
+                      )}
                     </td>
-                    <td className="py-4 md:py-5 text-right font-oswald font-bold text-lg md:text-xl text-[#007A99] tracking-tighter">
+                    <td className="py-3 md:py-4 text-xs md:text-sm font-semibold text-[#4B5563] uppercase tracking-tight">{product.marca}</td>
+                    <td className="py-3 md:py-4 pr-4">
+                      <div className="font-bold text-sm md:text-base text-[#000000] leading-tight">{product.producto}</div>
+                      {product.sabores && product.sabores.length > 0 && <div className="text-[10px] text-[#374151] mt-0.5 uppercase tracking-widest font-bold">{product.sabores.join(', ')}</div>}
+                    </td>
+                    <td className="py-3 md:py-4 text-right font-oswald font-bold text-base md:text-lg text-[#007A99] tracking-tighter">
                       {formatPrice(product.precioPush)}
                     </td>
-                    <td className="py-4 md:py-5 text-right font-oswald font-bold text-lg md:text-xl text-[#000000] tracking-tighter">
+                    <td className="py-3 md:py-4 text-right font-oswald font-bold text-base md:text-lg text-[#000000] tracking-tighter">
                       {product.precioPublico > 0 ? formatPrice(product.precioPublico) : '-'}
                     </td>
                   </tr>
@@ -586,8 +608,8 @@ export default function App() {
           {/* Footer del Reporte */}
           <div className="mt-20 pt-10 border-t border-gray-100 text-center">
             <p className="text-[10px] text-gray-300 font-medium uppercase tracking-[0.2em] mb-2">Este reporte contiene información confidencial de Push Sport</p>
-            <p className="font-oswald text-xs font-bold tracking-widest text-gray-500">WWW.PUSHSPORT.COM.AR</p>
-          </div>
+{/*             <p className="font-oswald text-xs font-bold tracking-widest text-gray-500">WWW.PUSHSPORT.COM.AR</p>
+ */}          </div>
 
           {/* Decoración PDF (Simplificada para evitar errores de captura) */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-gray-50 rounded-full opacity-50 -mr-32 -mt-32"></div>

@@ -29,7 +29,9 @@ const styles = StyleSheet.create({
   tableHeader: { flexDirection: 'row', borderBottomWidth: 3, borderBottomColor: '#000000', paddingBottom: 4, marginBottom: 4, alignItems: 'center' },
   headerText: { fontSize: 8, color: '#1F2937', textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: 1 },
   tableRow: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#E5E7EB', paddingVertical: 6, alignItems: 'center' },
-  productImage: { width: 140, height: 140, borderRadius: 8, objectFit: 'contain' },
+  imageWrapper: { width: 140, height: 140, borderRadius: 8, overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' },
+  // MODIFICA EL PORCENTAJE ABAJO (Ej. '110%', '115%') PARA AJUSTAR EL RECORTE DEL BORDE
+  productImage: { width: '125%', height: '125%', objectFit: 'cover' },
   imagePlaceholder: { width: 140, height: 140, borderRadius: 8, backgroundColor: '#F3F4F6', display: 'flex', justifyContent: 'center', alignItems: 'center' },
   placeholderText: { fontSize: 56, fontFamily: 'Helvetica-Bold', color: '#9CA3AF', textTransform: 'uppercase' },
   rowTextMarca: { fontSize: 7, color: '#374151', textTransform: 'uppercase', fontWeight: 'bold' },
@@ -83,21 +85,30 @@ const ReportPDF = ({ products, currentDate, showPushPrice = true }) => {
             <View style={colPrecioPublico}><Text style={styles.headerText}>P. Público</Text></View>
           </View>
 
-          {products.map((prod) => (
-            <View key={prod.id} style={styles.tableRow} wrap={false}>
-                <View style={colImg}>
-                  {prod.image ? (
-                    <Image src={prod.image} style={styles.productImage} />
-                  ) : (
-                    <View style={styles.imagePlaceholder}>
-                      <Text style={styles.placeholderText}>{prod.producto.charAt(0)}</Text>
-                    </View>
-                  )}
-                </View>
-                <View style={colCategoria}>
-                  <Text style={styles.rowTextMarca}>{prod.marca}</Text>
-                  {prod.sabores && prod.sabores.length > 0 && <Text style={styles.rowTextSabor}>Sabores: {prod.sabores.join(', ')}</Text>}
-                </View>
+          {products.map((prod) => {
+            const getAbsoluteImageUrl = (url) => {
+              if (!url) return null;
+              if (url.startsWith('http')) return url;
+              return `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`;
+            };
+
+            return (
+              <View key={prod.id} style={styles.tableRow} wrap={false}>
+                  <View style={colImg}>
+                    {prod.image ? (
+                      <View style={styles.imageWrapper}>
+                        <Image src={getAbsoluteImageUrl(prod.image)} style={styles.productImage} />
+                      </View>
+                    ) : (
+                      <View style={styles.imagePlaceholder}>
+                        <Text style={styles.placeholderText}>{prod.producto.charAt(0)}</Text>
+                      </View>
+                    )}
+                  </View>
+                  <View style={colCategoria}>
+                    <Text style={styles.rowTextMarca}>{prod.marca}</Text>
+                    {prod.sabores && prod.sabores.length > 0 && <Text style={styles.rowTextSabor}>Sabores: {prod.sabores.join(', ')}</Text>}
+                  </View>
                 <View style={colProducto}>
                   <Text style={styles.rowTextProducto}>{prod.producto}</Text>
                 </View>
@@ -110,7 +121,8 @@ const ReportPDF = ({ products, currentDate, showPushPrice = true }) => {
                   <Text style={styles.rowTextPrecioPublico}>{prod.precioPublico > 0 ? formatPrice(prod.precioPublico) : '-'}</Text>
                 </View>
               </View>
-            ))}
+            );
+          })}
         </View>
       </Page>
     </Document>

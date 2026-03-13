@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
   colDetalle: { width: '10%', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 1 },
   colPrecio: { width: '10%', textAlign: 'right' },
   tableRow: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#E5E7EB', paddingVertical: 6, alignItems: 'center' },
-  productImage: { width: 150, height: 150, borderRadius: 8, objectFit: 'contain' },
+  imageWrapper: { width: 150, height: 150, borderRadius: 8, overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' },
+  // MODIFICA EL PORCENTAJE ABAJO (Ej. '110%', '115%') PARA AJUSTAR EL RECORTE DEL BORDE
+  productImage: { width: '125%', height: '125%', objectFit: 'cover' },
   imagePlaceholder: { width: 150, height: 150, borderRadius: 8, backgroundColor: '#F3F4F6', display: 'flex', justifyContent: 'center', alignItems: 'center' },
   placeholderText: { fontSize: 60, fontFamily: 'Helvetica-Bold', color: '#9CA3AF', textTransform: 'uppercase' },
   rowTextProducto: { fontSize: 9, fontFamily: 'Helvetica-Bold', fontWeight: 'bold', color: '#000000' },
@@ -84,11 +86,20 @@ const ShopReportPDF = ({ shopName, items, currentDate }) => {
             const stockAnterior = Number(item.stockAnterior) || 0;
             const cantidadDejada = Number(item.cantidadDejada) || 0;
             const totalStock = stockAnterior + cantidadDejada;
+            
+            const getAbsoluteImageUrl = (url) => {
+              if (!url) return null;
+              if (url.startsWith('http')) return url;
+              return `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`;
+            };
+
             return (
               <View key={index} style={styles.tableRow} wrap={false}>
                 <View style={styles.colImg}>
                   {prod.image ? (
-                    <Image src={prod.image} style={styles.productImage} />
+                    <View style={styles.imageWrapper}>
+                      <Image src={getAbsoluteImageUrl(prod.image)} style={styles.productImage} />
+                    </View>
                   ) : (
                     <View style={styles.imagePlaceholder}>
                       <Text style={styles.placeholderText}>{prod.producto.charAt(0)}</Text>
