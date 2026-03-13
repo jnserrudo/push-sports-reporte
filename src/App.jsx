@@ -52,7 +52,7 @@ const INITIAL_PRODUCTS = [
   { id: 7, marca: 'STAR NUTRITION', producto: 'Proteina Star Organica', sabores: [], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/v1/Proteina-Star-Organica.jpeg' },
   { id: 8, marca: 'ONE FIT', producto: 'Proteina One Fit', sabores: ['Vainilla', 'Frutilla', 'Chocolate'], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/v1/Proteina_Onefit.jpeg' },
   { id: 9, marca: 'ONE FIT', producto: 'Fat Distroyer 2.0 One Fit (90 Caps)', sabores: [], precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/img_quemador_fat_destroyer_one_fit.jpeg' },
-  { id: 10, marca: 'STAR NUTRITION', producto: 'Bcca Star Limon 270grs (en Polvo)', sabores: ['Limon','Frutos Rojos'], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/v1/Bcca_star_270.jpeg' },
+  { id: 10, marca: 'STAR NUTRITION', producto: 'Bcca Star 270grs (en Polvo)', sabores: ['Limon','Frutos Rojos'], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/v1/Bcca_star_270.jpeg' },
   //{ id: 11, marca: 'STAR NUTRITION', producto: 'Bcca Star Frutos Rojos 300grs (en Polvo)', sabores: ['Frutos Rojos'], precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
   { id: 12, marca: 'STAR NUTRITION', producto: 'Bcca Star En Capsulas', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_bcaa_star_2000.jpeg' },
   { id: 13, marca: 'ONE FIT', producto: 'Bcca One Fit 300grs', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/v1/Bcca_One_Fit_300g.jpeg' },
