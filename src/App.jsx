@@ -43,7 +43,7 @@ import ShopReportPDF from './ShopReportPDF';
 
 // --- DATOS INICIALES (ESTÁTICOS) ---
 const INITIAL_PRODUCTS = [
-  { id: 1, marca: 'STAR NUTRITION', producto: 'Creatina 300 Grs Star', sabores: ['Frutos Rojos'], precioPush: 25000, precioPublico: 30000, image: '/productos_push_sports/v1/Creatina_star_sobre.jpeg' },
+  { id: 1, marca: 'STAR NUTRITION', producto: 'Creatina 300 Grs Star', sabores: ['Frutos Rojos','Neutro'], precioPush: 25000, precioPublico: 30000, image: '/productos_push_sports/v1/Creatina_star_sobre.jpeg' },
   { id: 2, marca: 'ONE FIT', producto: 'Creatina 200 Grs One Fit', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/v1/Creatina_One_Fit_200g.jpeg' },
   { id: 3, marca: 'ONE FIT', producto: 'Creatina 500 Grs One Fit Pote', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/img_one_fit_creatina_500g.jpeg' }, 
   { id: 4, marca: 'STAR NUTRITION', producto: 'L-Carnitina Star Nutrition', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/v1/L-Carnitina_Star_Nutrition.jpeg' }, 
@@ -51,10 +51,10 @@ const INITIAL_PRODUCTS = [
   { id: 6, marca: 'STAR NUTRITION', producto: 'Proteina Star 1 Kg (Con Colageno)', sabores: ['Vainilla', 'Chocolate'], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/v1/Proteina_Star_1kg_colageno.jpeg' },
   { id: 7, marca: 'STAR NUTRITION', producto: 'Proteina Star Organica', sabores: [], precioPush: 42000, precioPublico: 47000, image: '/productos_push_sports/v1/Proteina-Star-Organica.jpeg' },
   { id: 8, marca: 'ONE FIT', producto: 'Proteina One Fit', sabores: ['Vainilla', 'Frutilla', 'Chocolate'], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/v1/Proteina_Onefit.jpeg' },
-  { id: 9, marca: 'ONE FIT', producto: 'Fat Distroyer 2.0 One Fit (90 Caps)', sabores: [], precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/v1/img_quemador_fat_destroyer_one_fit.jpeg' },
-  { id: 10, marca: 'STAR NUTRITION', producto: 'Bcca Star Limon 270grs (en Polvo)', sabores: ['Limon','Frutos Rojos'], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/v1/Bcca_Star_270.jpeg' },
+  { id: 9, marca: 'ONE FIT', producto: 'Fat Distroyer 2.0 One Fit (90 Caps)', sabores: [], precioPush: 14000, precioPublico: 19000, image: '/productos_push_sports/img_quemador_fat_destroyer_one_fit.jpeg' },
+  { id: 10, marca: 'STAR NUTRITION', producto: 'Bcca Star Limon 270grs (en Polvo)', sabores: ['Limon','Frutos Rojos'], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/v1/Bcca_star_270.jpeg' },
   //{ id: 11, marca: 'STAR NUTRITION', producto: 'Bcca Star Frutos Rojos 300grs (en Polvo)', sabores: ['Frutos Rojos'], precioPush: 27000, precioPublico: 32000, image: '/productos_push_sports/img_bcaa_mtor_270g_star.jpeg' },
-  { id: 12, marca: 'STAR NUTRITION', producto: 'Bcca Star En Capsulas', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_vitamina_c_star_nutrition.jpeg' },
+  { id: 12, marca: 'STAR NUTRITION', producto: 'Bcca Star En Capsulas', sabores: [], precioPush: 8000, precioPublico: 12000, image: '/productos_push_sports/img_bcaa_star_2000.jpeg' },
   { id: 13, marca: 'ONE FIT', producto: 'Bcca One Fit 300grs', sabores: [], precioPush: 28000, precioPublico: 33000, image: '/productos_push_sports/v1/Bcca_One_Fit_300g.jpeg' },
   { id: 14, marca: 'STAR NUTRITION', producto: 'Eaa\u00B4s Essential Aminos (360 Gr) Star', sabores: [], precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_eaas_essential_aminos_star.jpeg' },
   { id: 15, marca: 'STAR NUTRITION', producto: 'Omega 3 Star (60 Comp)', sabores: [], precioPush: 30000, precioPublico: 35000, image: '/productos_push_sports/img_omega_3_star.jpeg' },
